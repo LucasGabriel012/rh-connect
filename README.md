@@ -678,6 +678,10 @@ pnpm format:check:web
 pnpm format:web
 ```
 
+Pull Requests e pushes na `main` que alterem o Front-end ou arquivos de configuracao relacionados executam CI com typecheck, lint, testes e build.
+
+`pnpm format:check:web` ainda nao e gate obrigatorio da CI por causa da divida conhecida de formatacao herdada do prototipo.
+
 O Back-end em `apps/api` ainda não foi inicializado nesta fase.
 
 Após as próximas etapas da migração, documentar aqui:
