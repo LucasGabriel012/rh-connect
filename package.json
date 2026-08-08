@@ -6,6 +6,9 @@
   "scripts": {
     "dev:web": "pnpm --dir apps/web dev",
     "build:web": "pnpm --dir apps/web build",
+    "format:web": "pnpm --dir apps/web format",
+    "format:check:web": "pnpm --dir apps/web format:check",
+    "lint:web": "pnpm --dir apps/web lint",
     "typecheck:web": "pnpm --dir apps/web typecheck"
   }
 }

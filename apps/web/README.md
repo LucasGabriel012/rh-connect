@@ -29,6 +29,9 @@ A partir da raiz do repositorio:
 pnpm dev:web
 pnpm build:web
 pnpm typecheck:web
+pnpm lint:web
+pnpm format:check:web
+pnpm format:web
 ```
 
 Ou diretamente nesta pasta:
@@ -37,6 +40,9 @@ Ou diretamente nesta pasta:
 pnpm dev
 pnpm build
 pnpm typecheck
+pnpm lint
+pnpm format:check
+pnpm format
 ```
 
 Este codigo ainda esta em processo de migracao estrutural. A separacao de rotas, mocks, servicos de API e Design System ocorrera em etapas futuras.

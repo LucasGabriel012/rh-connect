@@ -671,6 +671,10 @@ Comandos disponíveis a partir da raiz:
 ```bash
 pnpm dev:web
 pnpm build:web
+pnpm typecheck:web
+pnpm lint:web
+pnpm format:check:web
+pnpm format:web
 ```
 
 O Back-end em `apps/api` ainda não foi inicializado nesta fase.
