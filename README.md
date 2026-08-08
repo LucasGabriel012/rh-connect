@@ -673,6 +673,7 @@ pnpm dev:web
 pnpm build:web
 pnpm typecheck:web
 pnpm lint:web
+pnpm test:web
 pnpm format:check:web
 pnpm format:web
 ```
