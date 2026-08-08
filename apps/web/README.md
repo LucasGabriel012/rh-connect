@@ -10,6 +10,8 @@ O Prototipo 01 exportado do Figma Make foi movido para esta pasta na Etapa 5 da 
 - TypeScript
 - Vite
 - Tailwind CSS 4
+- Vitest
+- React Testing Library
 
 ## TypeScript
 
@@ -30,6 +32,7 @@ pnpm dev:web
 pnpm build:web
 pnpm typecheck:web
 pnpm lint:web
+pnpm test:web
 pnpm format:check:web
 pnpm format:web
 ```
@@ -41,8 +44,12 @@ pnpm dev
 pnpm build
 pnpm typecheck
 pnpm lint
+pnpm test
+pnpm test:run
 pnpm format:check
 pnpm format
 ```
+
+Os testes seguem a convencao `src/**/*.test.ts` e `src/**/*.test.tsx`.
 
 Este codigo ainda esta em processo de migracao estrutural. A separacao de rotas, mocks, servicos de API e Design System ocorrera em etapas futuras.
