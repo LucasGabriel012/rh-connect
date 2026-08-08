@@ -1,7 +1,30 @@
 # apps/web
 
-Futura aplicacao Front-end do RH Connect.
+Aplicacao Front-end atual do RH Connect.
 
-Nesta etapa, o prototipo atual ainda permanece na estrutura original da raiz, usando `src/`, `index.html` e `vite.config.ts`.
+O Prototipo 01 exportado do Figma Make foi movido para esta pasta na Etapa 5 da migracao, sem refatoracao de componentes, estilos, navegacao, mocks ou comportamento.
 
-A migracao controlada do Front-end para `apps/web` esta prevista para a Etapa 5. Nenhum codigo do prototipo foi movido para esta pasta nesta etapa.
+## Stack atual
+
+- React
+- TypeScript
+- Vite
+- Tailwind CSS 4
+
+## Comandos
+
+A partir da raiz do repositorio:
+
+```bash
+pnpm dev:web
+pnpm build:web
+```
+
+Ou diretamente nesta pasta:
+
+```bash
+pnpm dev
+pnpm build
+```
+
+Este codigo ainda esta em processo de migracao estrutural. A separacao de rotas, mocks, servicos de API e Design System ocorrera em etapas futuras.
