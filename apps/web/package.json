@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "build": "vite build",
-    "dev": "vite"
+    "dev": "vite",
+    "typecheck": "tsc --build --pretty false"
   },
   "dependencies": {
     "@emotion/react": "11.14.0",
@@ -65,9 +66,13 @@
     "vaul": "1.1.2"
   },
   "devDependencies": {
+    "@types/node": "22.13.14",
+    "@types/react": "18.3.18",
+    "@types/react-dom": "18.3.5",
     "@tailwindcss/vite": "4.1.12",
     "@vitejs/plugin-react": "4.7.0",
     "tailwindcss": "4.1.12",
+    "typescript": "5.6.3",
     "vite": "6.3.5"
   },
   "peerDependencies": {
