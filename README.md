@@ -4,7 +4,7 @@
 
 Plataforma web responsiva para preparação de candidatos para entrevistas de emprego, desenvolvida como projeto acadêmico no SENAC-DF.
 
-> **Status atual:** transição do Protótipo 01 para uma versão funcional do produto.
+> **Status atual:** transição do Protótipo 01 para uma versão funcional do produto. O Front-end atual foi movido para `apps/web`; `apps/api` ainda não possui Back-end funcional.
 
 ---
 
@@ -664,11 +664,18 @@ Dashboard correspondente
 
 ## 23. Como executar o projeto
 
-> Esta seção deverá ser atualizada após a criação da estrutura oficial do monorepositório.
+O Front-end atual está em `apps/web`, ainda como protótipo migrado estruturalmente a partir do Figma Make.
 
-Enquanto o projeto ainda estiver na estrutura original exportada do Figma Make, consulte o `package.json` para os scripts disponíveis.
+Comandos disponíveis a partir da raiz:
 
-Após a migração, documentar aqui:
+```bash
+pnpm dev:web
+pnpm build:web
+```
+
+O Back-end em `apps/api` ainda não foi inicializado nesta fase.
+
+Após as próximas etapas da migração, documentar aqui:
 
 ```text
 Pré-requisitos
