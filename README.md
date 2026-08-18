@@ -1,218 +1,146 @@
 # RH Connect
 
-> **Contexto técnico v0.2:** stack, MySQL, Git/GitHub, monorepo e Vercel adotados provisoriamente para a versão técnica inicial.
-
 Plataforma web responsiva para preparação de candidatos para entrevistas de emprego, desenvolvida como projeto acadêmico no SENAC-DF.
 
-> **Status atual:** transição do Protótipo 01 para uma versão funcional do produto. O Front-end atual foi movido para `apps/web`; `apps/api` ainda não possui Back-end funcional.
+O objetivo da versão atual é transformar o protótipo aprovado em uma versão testável do produto, priorizando um fluxo menor, porém funcionando de verdade.
+
+> **Entrega testável:** 10/09/2026  
+> **Status atual:** organização da base técnica, auditoria do protótipo atualizado e preparação para evolução do Front-end e Back-end.
 
 ---
 
-## 1. Visão do produto
+## 1. Visão geral do projeto
 
-O RH Connect tem como objetivo oferecer um ambiente de treinamento de entrevistas no qual o candidato possa:
+O RH Connect tem como objetivo oferecer um ambiente de preparação para entrevistas, permitindo que candidatos pratiquem respostas, recebam avaliação humana e acompanhem sua evolução.
 
-1. criar uma conta;
-2. completar seu perfil profissional;
-3. cadastrar uma vaga de interesse;
-4. realizar uma entrevista simulada;
-5. gravar e enviar respostas;
-6. aguardar avaliação humana;
-7. consultar um relatório estruturado;
-8. praticar novamente e acompanhar sua evolução.
+A primeira versão testável deve priorizar o fluxo principal com avaliação humana.
 
-A primeira versão funcional deve priorizar o fluxo completo com **avaliação humana**. Recursos de Inteligência Artificial são considerados evolução posterior e não devem bloquear o MVP.
+Recursos como IA, gamificação completa, Nilo com voz, Árvore de Talentos e Centro de Desenvolvimento são considerados evolução futura ou funcionalidades “Em breve”, salvo nova decisão registrada pela equipe.
 
 ---
 
-## 2. Perfis principais
+## 2. Fluxo principal da entrega testável
 
-O MVP trabalha com três perfis principais.
+O fluxo principal considerado para a entrega de 10/09 é:
+
+```text
+Cadastro/Login
+  ↓
+Onboarding
+  ↓
+Dashboard
+  ↓
+Perfil/Vaga
+  ↓
+Entrevista simplificada
+  ↓
+Avaliação humana
+  ↓
+Resultado/Relatório
+```
+
+A prioridade é garantir que esse fluxo funcione de forma consistente, sem depender apenas de telas mockadas simulando funcionalidades essenciais.
+
+Dados de teste podem ser usados durante desenvolvimento e validação, mas o fluxo principal não deve fingir funcionamento real apenas com dados visuais ou estados estáticos.
+
+---
+
+## 3. Perfis principais
+
+O sistema considera três perfis principais.
 
 ### Candidato
 
 Responsável por:
 
-- gerenciar o próprio perfil;
-- cadastrar vagas;
-- realizar entrevistas;
-- gravar e enviar respostas;
-- acompanhar o status das avaliações;
-- consultar os próprios resultados e relatórios.
+- criar conta e acessar o sistema;
+- passar pelo onboarding;
+- completar o perfil;
+- cadastrar ou informar uma vaga;
+- realizar entrevista ou resposta simplificada;
+- acompanhar avaliação;
+- visualizar resultado/relatório.
 
 ### Avaliador
 
 Responsável por:
 
 - acessar entrevistas atribuídas;
-- assistir às gravações autorizadas;
-- preencher avaliações;
-- registrar pontos fortes e oportunidades de melhoria;
-- salvar rascunhos;
-- concluir avaliações;
-- consultar seu histórico.
+- analisar respostas dos candidatos;
+- preencher avaliação humana;
+- registrar observações;
+- concluir avaliação;
+- permitir que o candidato veja o resultado após finalização.
 
 ### Administrador
 
 Responsável por:
 
-- gerenciar usuários;
-- gerenciar avaliadores;
-- acompanhar entrevistas;
-- atribuir entrevistas;
-- gerenciar perguntas;
-- gerenciar critérios;
-- operar consentimentos, configurações e ações administrativas.
-
----
-
-## 3. Fluxo principal do MVP
-
-```text
-Cadastro
-  ↓
-Perfil profissional
-  ↓
-Cadastro da vaga
-  ↓
-Entrevista simulada
-  ↓
-Revisão e envio
-  ↓
-Avaliação humana
-  ↓
-Relatório
-  ↓
-Nova prática
-```
+- acompanhar o sistema;
+- gerenciar usuários e avaliadores, conforme escopo definido;
+- apoiar a operação da versão testável;
+- acessar informações administrativas mínimas necessárias.
 
 ---
 
 ## 4. Estado atual do projeto
 
-O Protótipo 01, criado no Figma Make, é atualmente a principal referência visual do RH Connect.
+O projeto está em fase de reorganização para sair de um protótipo visual e caminhar para uma versão testável.
 
-O código exportado já possui uma base em React, TypeScript, Vite e Tailwind CSS, além de componentes visuais reutilizáveis e tokens iniciais de tema.
+A base visual vem de um protótipo criado no Figma Make, exportado para uma aplicação Front-end.
 
-Entretanto, ele ainda deve ser tratado como **protótipo navegável**, e não como arquitetura definitiva.
+Como o protótipo foi atualizado, auditorias antigas podem estar desatualizadas. Por isso, a etapa atual é refazer a auditoria com base na versão mais recente.
 
-A auditoria inicial identificou que ainda existem, entre outros pontos:
+Objetivos imediatos:
 
-- navegação simulada;
-- autenticação simulada;
-- cadastro simulado;
-- câmera e microfone simulados;
-- gravação simulada;
-- upload simulado;
-- dados hardcoded/mocks;
-- ausência de integração real com API;
-- ausência de banco de dados;
-- ausência de áreas completas de avaliador e administrador;
-- concentração excessiva de responsabilidades no arquivo principal;
-- necessidade de consolidação do Design System;
-- ausência de estratégia completa de testes e automação.
-
-A estratégia recomendada é **reaproveitamento parcial e migração controlada**.
+- limpar referências antigas que possam confundir a equipe;
+- usar apenas o protótipo atualizado como referência principal;
+- auditar o Front-end atual;
+- mapear telas, componentes, rotas e pontos mockados;
+- documentar como a equipe Front deve continuar;
+- alinhar com o Back-end a estrutura inicial do `apps/api`.
 
 ---
 
-## 5. Estratégia de migração
+## 5. Protótipo atualizado e pasta `references`
+
+A pasta `references` deve ser usada apenas para materiais de apoio e referências do projeto.
+
+Versões antigas do protótipo podem ser removidas para:
+
+- reduzir o tamanho do repositório;
+- evitar duplicidade;
+- impedir que a auditoria use uma versão desatualizada;
+- facilitar a organização da equipe.
+
+A versão válida para auditoria deve ser a versão atual exportada do Figma Make.
+
+Caso o protótipo atualizado seja muito pesado para manter no repositório, ele pode ficar no Drive da equipe, e a pasta `references` pode conter apenas um `README.md` indicando onde está a versão correta.
+
+Exemplo recomendado:
 
 ```text
-Preservar o protótipo original
-        ↓
-Auditar o código existente
-        ↓
-Criar a estrutura oficial
-        ↓
-Migrar componentes e estilos úteis
-        ↓
-Consolidar o Design System
-        ↓
-Criar rotas reais
-        ↓
-Separar mocks
-        ↓
-Criar camada de API
-        ↓
-Integrar Front-end e Back-end
-        ↓
-Adicionar testes
-        ↓
-Substituir simulações por funcionalidades reais
+references/
+└── README.md
 ```
 
-Não realizar uma reescrita total sem necessidade e não continuar adicionando funcionalidades diretamente ao código monolítico do protótipo.
+Exemplo de conteúdo para `references/README.md`:
+
+```md
+# References
+
+As versões antigas do protótipo foram removidas para evitar duplicidade e reduzir o tamanho do repositório.
+
+A versão válida para auditoria e organização do Front-end é o protótipo atualizado exportado do Figma Make.
+
+Caso o arquivo do protótipo esteja no Drive da equipe, manter aqui apenas a indicação da origem e data da versão utilizada.
+```
 
 ---
 
-## 6. Stack técnica adotada para a versão inicial
+## 6. Estrutura prevista do repositório
 
-Para permitir o avanço do projeto, a stack abaixo será utilizada **provisoriamente nesta versão técnica inicial**. Ela poderá ser revisada caso a equipe identifique impedimento técnico relevante ou registre uma decisão posterior.
-
-### Front-end
-
-- React
-- TypeScript
-- Vite
-- React Router
-- React Hook Form
-- Zod
-- TanStack Query
-- Storybook
-- Vitest
-- React Testing Library
-- Cypress
-
-### Back-end
-
-- Node.js
-- TypeScript
-- NestJS
-- Prisma
-- OpenAPI / Swagger UI
-- Jest
-- Supertest
-
-### Banco de dados
-
-- MySQL
-
-Motivo atual: familiaridade da equipe e adequação aos requisitos relacionais do MVP.
-
-### Qualidade e automação
-
-- ESLint
-- Prettier
-- GitHub Actions
-
-### Versionamento e colaboração
-
-- Git
-- GitHub
-- `main` como branch principal estável
-- branches por tarefa
-- Pull Requests
-- GitHub Projects para acompanhamento técnico
-
-### Deploy e infraestrutura
-
-Adotado provisoriamente:
-
-- Vercel para o Front-end
-
-Ainda a definir:
-
-- hospedagem da API;
-- armazenamento dos vídeos;
-- política de retenção;
-- estratégia final de autenticação/sessão.
-
----
-
-## 7. Arquitetura inicial adotada provisoriamente
-
-Para esta versão técnica inicial, será utilizado provisoriamente um **monorepositório**.
+A estrutura alvo do projeto segue a ideia de monorepositório:
 
 ```text
 rh-connect/
@@ -220,388 +148,335 @@ rh-connect/
 │   ├── web/
 │   └── api/
 ├── packages/
-│   ├── ui/
-│   ├── types/
-│   ├── validation/
-│   └── config/
 ├── docs/
-├── .github/
-├── .env.example
-├── .gitignore
-├── AGENTS.md
+├── references/
 ├── README.md
 └── package.json
 ```
 
 ### `apps/web`
 
-Aplicação Front-end:
+Aplicação Front-end.
 
-- páginas;
-- layouts;
+Responsável por:
+
+- telas;
 - rotas;
-- formulários;
-- integração com API;
+- layouts;
+- componentes;
 - estados de interface;
-- responsividade.
+- responsividade;
+- integração futura com API.
+
+Nesta fase, o foco do `apps/web` é a auditoria e organização do protótipo atualizado.
 
 ### `apps/api`
 
-Aplicação Back-end:
+Aplicação Back-end.
+
+Responsável por:
 
 - autenticação;
-- autorização;
+- usuários;
+- perfis/permissões;
+- banco de dados;
 - regras de negócio;
 - APIs;
-- banco de dados;
-- integrações de infraestrutura;
-- upload e acesso seguro à mídia.
+- integrações necessárias.
 
-### `packages/ui`
-
-Design System e componentes reutilizáveis.
-
-### `packages/types`
-
-Tipos compartilhados quando realmente necessário.
-
-### `packages/validation`
-
-Schemas compartilháveis quando aprovados pela arquitetura.
+Nesta fase, o foco do `apps/api` é definir a base técnica inicial: stack, organização de pastas, banco/Prisma se mantido, entidades principais e direção inicial da autenticação.
 
 ### `docs`
 
-Documentação oficial e decisões do projeto.
+Documentação oficial do projeto.
+
+Pode conter:
+
+- escopo;
+- cronograma;
+- decisões;
+- auditorias;
+- mapas de telas;
+- plano de rotas;
+- guias para equipe;
+- decisões técnicas.
+
+### `references`
+
+Materiais de apoio e versões de referência do protótipo.
+
+Não deve acumular versões antigas sem necessidade.
 
 ---
 
-## 8. Organização recomendada do Front-end
+## 7. Stack técnica
+
+A stack do Front-end atual deve seguir o que veio do protótipo exportado e o que estiver configurado no `apps/web`.
+
+Referência atual para o Front-end:
+
+- React;
+- TypeScript;
+- Vite;
+- Tailwind CSS ou estilos equivalentes herdados do protótipo;
+- bibliotecas já presentes no projeto exportado.
+
+A stack do Back-end ainda deve ser confirmada pela equipe Back-end.
+
+Referências discutidas:
+
+- `apps/api` para a aplicação Back-end;
+- PostgreSQL como banco relacional;
+- Prisma como ORM, se a equipe mantiver esse caminho.
+
+Decisões como framework Back-end, autenticação, hospedagem da API e estratégia de sessão/token devem ser registradas oficialmente quando forem confirmadas.
+
+Não tratar decisões em aberto como definitivas.
+
+---
+
+## 8. Auditoria do protótipo atualizado
+
+A auditoria do protótipo atualizado deve ser feita antes de grandes mudanças estruturais.
+
+Objetivos da auditoria:
+
+- identificar a estrutura atual de arquivos;
+- listar telas existentes;
+- localizar componentes principais;
+- identificar telas concentradas em arquivos grandes;
+- entender como a navegação funciona hoje;
+- identificar mocks, dados hardcoded e navegação fake;
+- separar o que entra na entrega de 10/09;
+- separar o que fica como “Em breve”;
+- gerar documentação para a equipe continuar.
+
+Documentos esperados em `docs/front-end`:
 
 ```text
-apps/web/src/
-├── app/
-│   ├── router/
-│   ├── providers/
-│   └── App.tsx
-├── pages/
-│   ├── public/
-│   ├── auth/
-│   ├── candidate/
-│   ├── evaluator/
-│   └── admin/
-├── features/
-│   ├── auth/
-│   ├── profile/
-│   ├── jobs/
-│   ├── interviews/
-│   ├── evaluations/
-│   └── reports/
-├── components/
-│   ├── ui/
-│   └── shared/
-├── layouts/
-├── services/
-│   └── api/
-├── hooks/
-├── types/
-├── mocks/
-└── styles/
+docs/front-end/
+├── auditoria-prototipo-atualizado.md
+├── mapa-de-telas.md
+├── plano-de-rotas.md
+└── guia-de-modificacao-do-front-end.md
 ```
 
-Essa estrutura é uma referência para migração gradual e não deve ser aplicada em uma única refatoração massiva.
+---
+
+## 9. Mapa de telas
+
+O mapa de telas serve para a equipe Front-end não trabalhar no escuro.
+
+Ele deve registrar, para cada tela:
+
+- nome da tela;
+- arquivo ou componente onde está;
+- perfil relacionado;
+- prioridade;
+- se entra ou não na entrega de 10/09;
+- status atual;
+- rota sugerida;
+- dependências com Back-end;
+- observações.
+
+Exemplo:
+
+```text
+Tela: Login
+Arquivo atual: a identificar na auditoria
+Perfil: Público
+Prioridade: Alta
+Entra em 10/09: Sim
+Rota sugerida: /login
+Status atual: protótipo / visual
+Depende do Back: Sim, autenticação real
+Observação: precisa integrar com API posteriormente
+```
 
 ---
 
-## 9. Design System
+## 10. Guia de modificação do Front-end
 
-O Design System deve ser consolidado a partir do Protótipo 01 e da identidade visual aprovada.
+Após a auditoria e o mapa de telas, a equipe Front-end deve seguir um guia de modificação para evitar alterações desorganizadas.
 
-A primeira fase deve levantar e padronizar:
+O guia deve explicar como:
 
-- cores;
-- tipografia;
-- espaçamentos;
-- bordas;
-- sombras;
-- breakpoints;
-- estados;
-- ícones.
+- encontrar a tela no mapa;
+- localizar o arquivo no código;
+- rodar o projeto localmente;
+- corrigir responsividade;
+- corrigir bugs visuais;
+- corrigir redirecionamentos;
+- evitar refatorações grandes sem alinhamento;
+- registrar o que foi alterado;
+- abrir branch e Pull Request.
 
-Componentes prioritários:
+Regra principal:
 
-- Button
-- Input
-- PasswordInput
-- Checkbox
-- Select
-- Textarea
-- Card
-- Badge
-- Alert
-- Modal/Dialog
-- Toast
-- FormField
-- Loading/Skeleton
-- Tooltip
-
-Depois:
-
-- Sidebar
-- Header/TopBar
-- PageHeader
-- EmptyState
-- DataTable
-- Pagination
-- Filters
-- StatusBadge
-- Tabs
-
-Evitar espalhar novos valores visuais hardcoded pelo código.
+> Antes de alterar uma tela, identificar onde ela está, qual problema será resolvido e se ela entra na entrega de 10/09.
 
 ---
 
-## 10. Permissões e segurança
+## 11. Autenticação e recuperação de senha
 
-O controle de acesso deve ser aplicado no Back-end.
-
-Regras principais:
-
-- candidato acessa apenas os próprios dados;
-- avaliador acessa apenas entrevistas atribuídas e dados necessários;
-- administrador possui acesso operacional conforme permissões aprovadas;
-- avaliações em rascunho não aparecem ao candidato;
-- observações internas do avaliador não aparecem ao candidato;
-- ações críticas devem ser auditáveis;
-- consentimentos devem ser separados por finalidade;
-- esconder componentes no Front-end não substitui autorização no servidor.
-
----
-
-## 11. Privacidade e consentimentos
-
-A plataforma trabalha com dados pessoais, profissionais, imagem, voz, vídeos e avaliações.
-
-Princípios:
-
-- coletar somente dados necessários;
-- registrar consentimentos com data e versão;
-- separar consentimento de gravação de eventual consentimento para IA;
-- controlar acesso aos vídeos;
-- não expor segredos ou dados sensíveis;
-- respeitar retenção, exclusão e auditoria.
-
----
-
-## 12. Vídeos
-
-Os vídeos não devem ser armazenados diretamente no banco relacional.
-
-A arquitetura deve prever:
-
-- armazenamento externo de mídia;
-- metadados no banco;
-- upload com progresso;
-- tratamento de falhas;
-- confirmação real do servidor;
-- controle de acesso;
-- reprodução segura.
-
-Duração, tamanho, retenção e quantidade de regravações ainda dependem de decisões do projeto.
-
----
-
-## 13. Contratos da API
-
-Front-end e Back-end devem combinar previamente o formato de comunicação dos principais fluxos.
-
-Cada contrato deve indicar:
-
-- método HTTP;
-- rota;
-- autenticação;
-- dados de entrada;
-- campos obrigatórios;
-- resposta de sucesso;
-- resposta de erro;
-- códigos HTTP;
-- regras de autorização.
-
-Primeiros contratos prioritários:
+O F01 — Autenticação envolve principalmente:
 
 - cadastro;
 - login;
-- logout/sessão;
-- recuperação de senha;
-- usuário autenticado/perfil.
+- usuário logado;
+- perfis/permissões;
+- redirecionamento correto;
+- sessão/token;
+- integração com API.
 
-A documentação deve ser mantida em OpenAPI/Swagger e/ou em `/docs/06-api`.
+A recuperação de senha deve ser avaliada dentro do F01 — Autenticação como possível apoio ao login.
+
+Ela ainda não deve ser tratada como decisão fechada sem validação da equipe.
+
+Caso entre na entrega de 10/09, deve ser considerada como fluxo complementar ao login, sem ter o mesmo peso de cadastro/login, usuário logado, perfis e redirecionamento.
+
+A recuperação de senha pode envolver:
+
+- token, link ou código de recuperação;
+- banco de dados;
+- endpoints/API;
+- possível envio de e-mail;
+- validade do token;
+- cuidado para não revelar se um e-mail existe ou não.
+
+Se não couber no prazo, deve ser documentada como evolução futura.
 
 ---
 
-## 14. Git e colaboração
+## 12. Back-end na Semana 1
 
-Regras propostas:
+Na Semana 1, a parte do Back-end deve focar na preparação da base técnica inicial do `apps/api`.
+
+Isso significa:
+
+- confirmar a stack do Back-end;
+- definir a organização inicial das pastas do `apps/api`;
+- definir onde entra banco/Prisma, se esse caminho for mantido;
+- mapear entidades principais do sistema;
+- deixar uma direção inicial para autenticação, usuários, perfis e fluxo principal;
+- registrar um padrão mínimo para a equipe Back continuar sem cada pessoa fazer de um jeito.
+
+Não significa implementar todos os módulos na Semana 1.
+
+A prioridade é preparar a base técnica e permitir que as próximas tarefas sejam distribuídas com mais clareza.
+
+---
+
+## 13. Front-end na Semana 1
+
+Na Semana 1, a parte do Front-end deve focar em auditoria, revisão e organização.
+
+Prioridades:
+
+- auditar links, botões e menus;
+- verificar redirecionamentos;
+- auditar responsividade;
+- revisar telas principais;
+- registrar problemas encontrados;
+- evitar criar rotas no escuro;
+- evitar refatorações grandes sem mapa.
+
+A organização inicial de telas, rotas e layouts será conduzida com apoio do Codex, para depois a equipe Front continuar com mais segurança.
+
+---
+
+## 14. Nilo, gamificação e recursos futuros
+
+Nilo, gamificação completa, Árvore de Talentos e Centro de Desenvolvimento não devem bloquear a entrega principal de 10/09.
+
+Esses recursos podem aparecer como:
+
+- “Em breve”;
+- evolução futura;
+- tela visual desabilitada;
+- item de menu sem funcionalidade ativa, caso aprovado.
+
+Princípios:
+
+- Nilo é guia, não avaliador;
+- Nilo não substitui avaliação humana;
+- gamificação não deve usar ranking público;
+- XP não altera nota;
+- evolução é individual;
+- esses recursos não devem atrasar o fluxo principal da entrega testável.
+
+---
+
+## 15. Git e colaboração
+
+Regras recomendadas:
 
 - não desenvolver diretamente na `main`;
-- criar uma Issue por tarefa relevante;
-- criar uma branch por tarefa;
-- enviar alterações por Pull Request;
-- revisar antes do merge;
-- executar build e testes;
+- criar branch por tarefa;
+- manter alterações pequenas;
+- explicar o que foi alterado;
+- evitar refatorações grandes sem alinhamento;
+- abrir Pull Request quando possível;
+- revisar antes de mesclar;
 - não commitar segredos;
-- manter alterações pequenas e revisáveis.
+- não subir arquivos pesados sem necessidade.
 
 Exemplos de branches:
 
 ```text
-feature/web-login
-feature/api-login
-feature/database-users
-feature/design-system-button
-fix/sidebar-mobile
-docs/api-authentication
-refactor/auth-structure
-test/login-flow
+chore/auditoria-prototipo-atualizado
+docs/mapa-de-telas
+docs/guia-front-end
+fix/responsividade-dashboard
+fix/redirecionamento-login
+feature/auth-login
 ```
 
 ---
 
-## 15. GitHub Projects
+## 16. Como executar o projeto
 
-O GitHub Projects será utilizado como Kanban técnico oficial.
+O modo de execução depende da estrutura atual do `apps/web`.
 
-Fluxo sugerido:
+Se o Front-end estiver em `apps/web`, entrar na pasta:
 
-- Backlog
-- Pronta para iniciar
-- Em andamento
-- Em revisão
-- Em teste
-- Bloqueada
-- Concluída
-
-Cada Issue deve conter, quando aplicável:
-
-- responsável;
-- equipe;
-- prioridade;
-- sprint;
-- prazo;
-- dependências;
-- revisor;
-- critérios de aceite.
-
----
-
-## 16. Variáveis de ambiente
-
-Nunca commitar segredos.
-
-Arquivos reais de ambiente devem permanecer fora do Git.
-
-Exemplo de `.env.example`:
-
-```env
-DATABASE_URL=
-JWT_SECRET=
-API_URL=
-STORAGE_URL=
-STORAGE_KEY=
+```bash
+cd apps/web
 ```
 
-Nunca inserir valores reais em `.env.example`.
+Instalar dependências:
+
+```bash
+npm install
+```
+
+Rodar localmente:
+
+```bash
+npm run dev
+```
+
+Ou, se o projeto estiver usando `pnpm`:
+
+```bash
+pnpm install
+pnpm dev
+```
+
+Caso os comandos mudem, atualizar esta seção com os comandos oficiais do projeto.
+
+Não inventar comandos antes de confirmar a estrutura real.
 
 ---
 
-## 17. Testes
+## 17. Documentação principal
 
-A estratégia atual proposta é:
+A documentação do projeto deve ficar em `docs/`.
 
-### Front-end
-
-- Vitest
-- React Testing Library
-- Cypress
-
-### Back-end
-
-- Jest
-- Supertest
-
-### Automação
-
-- lint;
-- build;
-- testes;
-- GitHub Actions nos Pull Requests.
-
-Teste deve acompanhar o desenvolvimento, não ser deixado apenas para o final.
-
----
-
-## 18. Definition of Done
-
-Uma tarefa não deve ser considerada concluída apenas porque aparece visualmente.
-
-Quando aplicável, verificar:
-
-- critérios de aceite;
-- comportamento de sucesso;
-- loading;
-- erros;
-- estado vazio;
-- autorização;
-- responsividade;
-- acessibilidade;
-- build;
-- testes;
-- documentação;
-- ausência de segredos.
-
----
-
-## 19. Áreas profissionais iniciais
-
-A estrutura de conteúdo deverá suportar inicialmente áreas relacionadas a:
-
-- Tecnologia da Informação;
-- Gestão / Recursos Humanos;
-- Secretariado.
-
-O modelo deve permanecer extensível para novas áreas e subáreas futuramente.
-
-Evitar hardcodes que impeçam expansão.
-
----
-
-## 20. Nilo, gamificação e Árvore de Talentos
-
-Existe documentação própria para esses recursos.
-
-No momento, devem ser tratados conforme o status mais recente registrado pela equipe.
-
-Princípios importantes:
-
-- Nilo é guia, não avaliador;
-- Nilo não atribui notas;
-- Nilo não influencia contratação;
-- Nilo não aparece durante gravações;
-- gamificação não utiliza ranking entre candidatos;
-- XP não altera a nota;
-- evolução é individual;
-- falhas técnicas não penalizam progresso.
-
-Não implementar funcionalidades avançadas de gamificação sem confirmação do escopo.
-
----
-
-## 21. Documentação do projeto
-
-Estrutura recomendada:
+Sugestão de organização:
 
 ```text
 docs/
-├── 00-fontes-originais/
 ├── 01-produto-e-escopo/
 ├── 02-ux/
 ├── 03-design/
@@ -610,142 +485,59 @@ docs/
 ├── 06-api/
 ├── 07-testes/
 ├── 08-seguranca-e-permissoes/
-└── 09-gestao/
+├── 09-gestao/
+└── front-end/
 ```
 
-Decisões arquiteturais importantes devem ser registradas em ADRs.
-
-Exemplo:
+Documentos específicos da auditoria do Front-end devem ficar em:
 
 ```text
-docs/04-arquitetura/decisions/
-├── ADR-001-banco-de-dados.md
-├── ADR-002-estrutura-do-repositorio.md
-├── ADR-003-stack-frontend.md
-├── ADR-004-stack-backend.md
-├── ADR-005-autenticacao.md
-└── ADR-006-armazenamento-de-videos.md
+docs/front-end/
 ```
 
 ---
 
-## 22. Primeira fase técnica
+## 18. Decisões ainda em aberto
 
-Antes de avançar para funcionalidades complexas:
+Ainda precisam ser confirmadas pela equipe:
 
-1. preservar o ZIP original;
-2. criar/validar a estrutura do repositório;
-3. validar a stack;
-4. decidir o banco;
-5. configurar Front-end e Back-end;
-6. configurar lint, formatação e testes mínimos;
-7. consolidar o Design System mínimo;
-8. criar rotas reais iniciais;
-9. definir os contratos de autenticação;
-10. implementar cadastro/login/sessão;
-11. realizar a primeira integração real entre Front-end, API e banco;
-12. validar o redirecionamento por perfil.
-
-Primeira entrega funcional recomendada:
-
-```text
-Cadastro
-  ↓
-Login
-  ↓
-Sessão
-  ↓
-Identificação do perfil
-  ↓
-Dashboard correspondente
-```
-
----
-
-## 23. Como executar o projeto
-
-O Front-end atual está em `apps/web`, ainda como protótipo migrado estruturalmente a partir do Figma Make.
-
-Comandos disponíveis a partir da raiz:
-
-```bash
-pnpm dev:web
-pnpm build:web
-pnpm typecheck:web
-pnpm lint:web
-pnpm test:web
-pnpm format:check:web
-pnpm format:web
-```
-
-Pull Requests e pushes na `main` que alterem o Front-end ou arquivos de configuracao relacionados executam CI com typecheck, lint, testes e build.
-
-`pnpm format:check:web` ainda nao e gate obrigatorio da CI por causa da divida conhecida de formatacao herdada do prototipo.
-
-O Back-end em `apps/api` ainda não foi inicializado nesta fase.
-
-Após as próximas etapas da migração, documentar aqui:
-
-```text
-Pré-requisitos
-Instalação
-Variáveis de ambiente
-Execução do Front-end
-Execução do Back-end
-Banco de dados
-Migrations
-Seeds
-Testes
-Build
-Lint
-```
-
-Não inventar comandos antes de a estrutura oficial ser criada.
-
----
-
-## 24. Contribuição
-
-Antes de começar uma tarefa:
-
-1. consulte a Issue;
-2. confirme dependências;
-3. atualize a branch base;
-4. crie uma branch específica;
-5. implemente somente o escopo da tarefa;
-6. execute os testes relevantes;
-7. abra Pull Request;
-8. aguarde revisão.
-
-Para instruções específicas destinadas a agentes de código, consulte:
-
-```text
-AGENTS.md
-```
-
----
-
-## 25. Status das decisões
-
-Algumas decisões ainda permanecem abertas, entre elas:
-
-- estratégia final de autenticação/sessão;
+- stack final do Back-end;
+- banco de dados;
+- uso definitivo de Prisma;
+- estratégia de autenticação;
+- sessão ou token;
 - hospedagem da API;
-- armazenamento dos vídeos;
-- política de retenção;
-- detalhes de entrevista;
-- regras de regravação;
-- fórmula de avaliação;
-- escopo exato de gamificação.
+- armazenamento de vídeos;
+- formato final da entrevista: vídeo, áudio ou texto;
+- recuperação de senha na entrega de 10/09 ou evolução futura;
+- escopo exato de funcionalidades “Em breve”.
 
-Nunca tratar uma decisão pendente como definitiva sem registro oficial.
+Nenhuma decisão pendente deve ser tratada como definitiva sem registro.
 
 ---
 
-## 26. Objetivo da equipe nesta fase
+## 19. Objetivo da fase atual
 
-Transformar o Protótipo 01 em uma aplicação funcional e sustentável sem perder o trabalho visual aprovado e sem carregar para o produto final as limitações do código gerado para prototipação.
+A fase atual não é implementar tudo.
 
-A prioridade é:
+A prioridade agora é:
 
-**organização → integração → segurança → testes → fluxo principal funcionando → evolução.**
+```text
+limpar referências antigas
+  ↓
+usar o protótipo atualizado
+  ↓
+auditar o Front-end
+  ↓
+mapear telas
+  ↓
+planejar rotas
+  ↓
+documentar como o Front deve continuar
+  ↓
+confirmar base técnica do Back
+  ↓
+evoluir para implementação do fluxo principal
+```
+
+A entrega de 10/09 deve priorizar uma versão menor, mas funcionando de verdade no fluxo principal.

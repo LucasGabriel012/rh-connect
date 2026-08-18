@@ -4,12 +4,12 @@
   "version": "0.0.1",
   "type": "module",
   "scripts": {
-    "dev:web": "pnpm --dir apps/web dev",
-    "build:web": "pnpm --dir apps/web build",
-    "format:web": "pnpm --dir apps/web format",
-    "format:check:web": "pnpm --dir apps/web format:check",
-    "lint:web": "pnpm --dir apps/web lint",
-    "test:web": "pnpm --dir apps/web test:run",
-    "typecheck:web": "pnpm --dir apps/web typecheck"
+    "dev:web": "cd apps/web && pnpm run dev",
+    "build:web": "cd apps/web && pnpm run build",
+    "format:web": "cd apps/web && pnpm run format",
+    "format:check:web": "cd apps/web && pnpm run format:check",
+    "lint:web": "cd apps/web && pnpm run lint",
+    "test:web": "cd apps/web && pnpm run test:run",
+    "typecheck:web": "cd apps/web && pnpm run typecheck"
   }
 }

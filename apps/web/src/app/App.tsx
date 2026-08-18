@@ -1,6 +1,7 @@
 /** RH Connect — Exploração Visual | Fluxo Principal do Candidato */
 
 import { useState, useRef, useEffect, useCallback } from "react";
+import { toast, Toaster } from "sonner";
 import {
   ChevronRight, ChevronLeft, Check, CheckCircle, User, Briefcase, Video,
   Clock, Camera, Mic, Home, History, Settings, LogOut, Bell,
@@ -13,15 +14,35 @@ import {
 } from "lucide-react";
 import { BarChart, Bar, XAxis, YAxis, Cell, ResponsiveContainer, Tooltip, RadarChart, Radar, PolarGrid, PolarAngleAxis, PolarRadiusAxis } from "recharts";
 import { DevelopmentContent } from "./components/development-screen";
+import {
+  AccountDropdown, NotificationDropdown,
+  CANDIDATE_ACCOUNT, CANDIDATE_NOTIFS,
+} from "./components/header-popovers";
 import { LandingScreen as LandingScreenComponent } from "./components/landing-screen";
+import {
+  EvalDashboardScreen, EvalQueueScreen, EvalActiveScreen, EvalScreenView,
+  EvalReviewScreen, EvalDoneScreen, EvalHistoryScreen, EvalCriteriaScreen, EvalSettingsScreen,
+  EvalActivateScreen, EvalOnboardingScreen,
+} from "./components/eval-screens";
+import {
+  AdminDashboardScreen, AdminCandidatesScreen, AdminCandidateDetailScreen,
+  AdminEvaluatorsScreen, AdminEvaluatorFormScreen,
+  AdminInterviewsScreen, AdminAssignScreen, AdminQuestionsScreen,
+  AdminQuestionFormScreen, AdminRolesScreen, AdminCriteriaScreen,
+  AdminConsentScreen, AdminAuditScreen, AdminSettingsScreen,
+  AdminOnboardingScreen,
+} from "./components/admin-screens";
+import { CandidateOnboardingScreen } from "./components/onboarding-screens";
 
 // ─── Types & Constants ────────────────────────────────────────────────────────
 
 type Screen =
   // Público
   | "landing" | "terms" | "privacy"
-  // Auth
+  // Auth + Ativação
   | "auth" | "email-verify" | "forgot-password" | "reset-password"
+  // Onboarding / Primeiro acesso
+  | "candidate-onboarding" | "eval-activate" | "eval-onboarding" | "admin-onboarding"
   // Candidato
   | "dashboard" | "profile" | "settings" | "materials" | "notifications"
   | "job-list" | "job" | "job-detail"
@@ -29,12 +50,23 @@ type Screen =
   // Fluxo entrevista
   | "interview-setup" | "consent" | "prep" | "device" | "interview" | "review" | "interview-confirm" | "interview-done"
   // Aguardando / relatório
-  | "pending" | "report";
+  | "pending" | "report"
+  // Avaliador
+  | "eval-dashboard" | "eval-queue" | "eval-active" | "eval-screen" | "eval-review" | "eval-done" | "eval-history" | "eval-criteria" | "eval-settings"
+  // Administrador
+  | "admin-dashboard" | "admin-candidates" | "admin-candidate-detail" | "admin-evaluators" | "admin-evaluator-form"
+  | "admin-interviews" | "admin-assign"
+  | "admin-questions" | "admin-question-form" | "admin-roles" | "admin-criteria"
+  | "admin-consent" | "admin-audit" | "admin-settings";
 
 const STEPS: { id: Screen; label: string }[] = [
-  { id: "landing",           label: "Início" },
-  { id: "auth",              label: "Cadastro" },
-  { id: "dashboard",         label: "Dashboard" },
+  { id: "landing",              label: "Início" },
+  { id: "auth",                 label: "Cadastro" },
+  { id: "candidate-onboarding", label: "Onboarding" },
+  { id: "eval-activate",        label: "Ativar Conta Aval." },
+  { id: "eval-onboarding",      label: "Onboarding Aval." },
+  { id: "admin-onboarding",     label: "Intro Admin" },
+  { id: "dashboard",            label: "Dashboard" },
   { id: "profile",           label: "Perfil" },
   { id: "job-list",          label: "Minhas Vagas" },
   { id: "job",               label: "Nova Vaga" },
@@ -52,6 +84,31 @@ const STEPS: { id: Screen; label: string }[] = [
   { id: "development",       label: "Desenvolvimento" },
   { id: "materials",         label: "Materiais" },
   { id: "notifications",     label: "Notificações" },
+  // Avaliador
+  { id: "eval-dashboard",    label: "Avaliador" },
+  { id: "eval-queue",        label: "Fila" },
+  { id: "eval-active",       label: "Em Andamento" },
+  { id: "eval-screen",       label: "Avaliar" },
+  { id: "eval-review",       label: "Revisão Eval" },
+  { id: "eval-done",         label: "Concluída Eval" },
+  { id: "eval-history",      label: "Histórico Eval" },
+  { id: "eval-criteria",     label: "Critérios Eval" },
+  { id: "eval-settings",     label: "Config. Eval" },
+  // Administrador
+  { id: "admin-dashboard",   label: "Admin" },
+  { id: "admin-candidates",  label: "Candidatos" },
+  { id: "admin-candidate-detail", label: "Detalhe Candidato" },
+  { id: "admin-evaluators",  label: "Avaliadores" },
+  { id: "admin-evaluator-form", label: "Form. Avaliador" },
+  { id: "admin-interviews",  label: "Entrevistas" },
+  { id: "admin-assign",      label: "Atribuições" },
+  { id: "admin-questions",   label: "Perguntas" },
+  { id: "admin-question-form", label: "Nova Pergunta" },
+  { id: "admin-roles",       label: "Cargos" },
+  { id: "admin-criteria",    label: "Critérios Admin" },
+  { id: "admin-consent",     label: "Consentimentos" },
+  { id: "admin-audit",       label: "Auditoria" },
+  { id: "admin-settings",    label: "Config. Admin" },
 ];
 
 const AUTH_SCREENS: Screen[] = [
@@ -60,6 +117,10 @@ const AUTH_SCREENS: Screen[] = [
   "interview-history","development",
   "interview-setup","consent","prep","device","interview","review","interview-confirm","interview-done",
   "pending","report",
+  "eval-dashboard","eval-queue","eval-active","eval-screen","eval-review","eval-done","eval-history","eval-criteria","eval-settings",
+  "admin-dashboard","admin-candidates","admin-candidate-detail","admin-evaluators","admin-evaluator-form",
+  "admin-interviews","admin-assign",
+  "admin-questions","admin-question-form","admin-roles","admin-criteria","admin-consent","admin-audit","admin-settings",
 ];
 
 const QUESTIONS = [
@@ -370,7 +431,7 @@ function SidebarContent({
   const [showLogout, setShowLogout] = useState(false);
 
   return (
-    <div className="flex flex-col h-full relative" style={{ backgroundColor: "#0F2652" }}>
+    <div className="flex flex-col h-full relative" style={{ backgroundColor: "#021025" }}>
       {/* Logout confirmation modal */}
       {showLogout && (
         <div className="absolute inset-0 z-50 flex items-center justify-center p-4" style={{ backgroundColor: "rgba(15,38,82,0.92)" }}>
@@ -513,21 +574,15 @@ function TopBar({
       </div>
       <div className="flex items-center gap-2 sm:gap-3 shrink-0">
         {actions && <div className="hidden sm:flex items-center gap-2">{actions}</div>}
-        <button
-          onClick={() => onNavigate("notifications")}
-          className="relative p-2 text-muted-foreground hover:text-foreground transition-colors rounded-xl hover:bg-muted"
-          title="Notificações"
-        >
-          <Bell className="w-5 h-5" />
-          <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 bg-red-500 rounded-full" />
-        </button>
-        <button
-          onClick={() => onNavigate("profile")}
-          className="w-8 h-8 bg-gradient-to-br from-blue-500 to-blue-700 rounded-full flex items-center justify-center text-white text-xs font-bold hover:ring-2 hover:ring-primary/40 transition-all"
-          title="Meu Perfil"
-        >
-          JL
-        </button>
+        <NotificationDropdown
+          notifs={CANDIDATE_NOTIFS}
+          viewAllScreen="notifications"
+          onNavigate={onNavigate as (s: string) => void}
+        />
+        <AccountDropdown
+          config={CANDIDATE_ACCOUNT}
+          onNavigate={onNavigate as (s: string) => void}
+        />
       </div>
     </div>
   );
@@ -540,20 +595,21 @@ function AuthLayout({
   title: string; subtitle?: string; actions?: React.ReactNode;
   children: React.ReactNode;
 }) {
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState(() => sessionStorage.getItem("sb-collapsed") === "1");
+  const toggleCollapsed = () => setCollapsed(c => { sessionStorage.setItem("sb-collapsed", c ? "0" : "1"); return !c; });
 
   return (
     <div className="flex w-full">
       {/* Sidebar fixa — sem overlay, sem drawer, sem bloqueio de cliques */}
       <aside
         className={`flex flex-col shrink-0 sticky self-start transition-[width] duration-[220ms] ease-in-out ${collapsed ? "w-16" : "w-60"}`}
-        style={{ backgroundColor: "#0F2652", top: 44, height: "calc(100vh - 44px)" }}
+        style={{ backgroundColor: "#021025", top: 44, height: "calc(100vh - 44px)" }}
       >
         <SidebarContent
           current={current}
           onNavigate={onNavigate}
           collapsed={collapsed}
-          onToggleCollapse={() => setCollapsed(c => !c)}
+          onToggleCollapse={toggleCollapsed}
           onClose={() => {}}
           isMobile={false}
         />
@@ -643,21 +699,15 @@ function AuthScreen({ onNavigate }: { onNavigate: (s: Screen) => void }) {
                   <Field label="Senha" type="password" placeholder="Mínimo 8 caracteres" required />
                   <Field label="Confirmar senha" type="password" placeholder="Repita a senha" required />
                 </div>
-                <div className="bg-accent rounded-xl p-4 space-y-3">
+                <div className="bg-accent rounded-xl p-4">
                   <label className="flex items-start gap-3 cursor-pointer">
                     <input type="checkbox" className="mt-0.5 rounded shrink-0" />
                     <span className="text-xs text-foreground leading-relaxed">
                       Li e aceito os <button onClick={() => onNavigate("terms")} className="text-primary font-semibold hover:underline">Termos de uso</button> e a <button onClick={() => onNavigate("privacy")} className="text-primary font-semibold hover:underline">Política de privacidade</button>. <span className="text-red-500">*</span>
                     </span>
                   </label>
-                  <label className="flex items-start gap-3 cursor-pointer">
-                    <input type="checkbox" className="mt-0.5 rounded shrink-0" />
-                    <span className="text-xs text-muted-foreground leading-relaxed">
-                      Autorizo, de forma opcional, o uso anônimo das minhas avaliações para pesquisa futura com Inteligência Artificial supervisionada.
-                    </span>
-                  </label>
                 </div>
-                <Btn variant="primary" className="w-full !py-3" onClick={() => onNavigate("dashboard")}>
+                <Btn variant="primary" className="w-full !py-3" onClick={() => onNavigate("email-verify")}>
                   Criar minha conta
                 </Btn>
               </div>
@@ -671,6 +721,29 @@ function AuthScreen({ onNavigate }: { onNavigate: (s: Screen) => void }) {
             </p>
           </div>
         </Card>
+
+        {/* Demo shortcuts — prototype only, visually separate from real login */}
+        {tab === "login" && (
+          <div className="w-full max-w-md mx-auto mt-4 border border-dashed border-muted-foreground/30 rounded-2xl p-4 bg-muted/20">
+            <p className="text-[11px] text-muted-foreground font-semibold uppercase tracking-wide mb-3 text-center">
+              Navegação do protótipo — outros perfis
+            </p>
+            <p className="text-[10px] text-muted-foreground text-center mb-3 leading-relaxed">
+              No produto real, o perfil é identificado automaticamente após o login.<br/>
+              Estes atalhos existem apenas para demonstração.
+            </p>
+            <div className="flex gap-2">
+              <button onClick={() => onNavigate("eval-onboarding")}
+                className="flex-1 px-3 py-2 rounded-xl border border-teal-200 bg-teal-50 text-teal-700 text-xs font-semibold hover:bg-teal-100 transition-colors">
+                Avaliador
+              </button>
+              <button onClick={() => onNavigate("admin-onboarding")}
+                className="flex-1 px-3 py-2 rounded-xl border border-violet-200 bg-violet-50 text-violet-700 text-xs font-semibold hover:bg-violet-100 transition-colors">
+                Administrador
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -772,7 +845,7 @@ function DashboardScreen({ onNavigate }: { onNavigate: (s: Screen) => void }) {
         {[
           { icon: User,      label: "Completar perfil",    desc: "Formação, experiência e habilidades",      screen: "profile" as Screen, color: "text-blue-600 bg-blue-50" },
           { icon: Briefcase, label: "Minhas vagas",        desc: "Gerencie suas oportunidades cadastradas",  screen: "job-list" as Screen, color: "text-green-600 bg-green-50" },
-          { icon: BookOpen,  label: "Materiais de apoio",  desc: "Dicas e conteúdos de preparação",          screen: null,                color: "text-purple-600 bg-purple-50" },
+          { icon: BookOpen,  label: "Materiais de apoio",  desc: "Dicas e conteúdos de preparação",          screen: "materials" as Screen, color: "text-purple-600 bg-purple-50" },
         ].map(q => (
           <button key={q.label} onClick={() => q.screen && onNavigate(q.screen)} className="text-left w-full">
             <Card className="p-5 hover:shadow-md transition-all cursor-pointer">
@@ -997,7 +1070,7 @@ function JobScreen({ onNavigate }: { onNavigate: (s: Screen) => void }) {
                     </div>
                     <div className="flex flex-wrap items-center gap-2 sm:gap-3 shrink-0">
                       <Badge variant="success">{j.status}</Badge>
-                      <Btn size="sm" variant="primary" onClick={() => onNavigate("prep")}>
+                      <Btn size="sm" variant="primary" onClick={() => onNavigate("interview-setup")}>
                         Iniciar entrevista <ChevronRight className="w-3.5 h-3.5" />
                       </Btn>
                       <button className="p-2 text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-colors">
@@ -1051,7 +1124,7 @@ function JobScreen({ onNavigate }: { onNavigate: (s: Screen) => void }) {
             <Btn variant="outline" className="sm:self-auto" onClick={() => onNavigate("profile")}>← Voltar</Btn>
             <div className="flex flex-col sm:flex-row gap-3">
               <Btn variant="outline">Salvar vaga</Btn>
-              <Btn variant="primary" onClick={() => onNavigate("prep")}>
+              <Btn variant="primary" onClick={() => onNavigate("interview-setup")}>
                 Salvar e iniciar <ArrowRight className="w-4 h-4" />
               </Btn>
             </div>
@@ -1157,7 +1230,7 @@ function PrepScreen({ onNavigate }: { onNavigate: (s: Screen) => void }) {
         </div>
 
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <Btn variant="outline" onClick={() => onNavigate("job")}>← Voltar</Btn>
+          <Btn variant="outline" onClick={() => onNavigate("consent")}>← Voltar</Btn>
           <Btn variant="primary" size="lg" onClick={() => onNavigate("device")}>
             <span className="hidden sm:inline">Continuar para o teste técnico</span>
             <span className="sm:hidden">Teste técnico</span>
@@ -1291,7 +1364,7 @@ function DeviceScreen({ onNavigate }: { onNavigate: (s: Screen) => void }) {
 // ─── Screen 8: Entrevista Simulada ────────────────────────────────────────────
 
 function InterviewScreen({ onNavigate }: { onNavigate: (s: Screen) => void }) {
-  const [qIdx, setQIdx] = useState(1);
+  const [qIdx, setQIdx] = useState(0);
   const [recording, setRecording] = useState<"idle" | "recording" | "done">("idle");
   const q = QUESTIONS[qIdx];
 
@@ -1443,7 +1516,7 @@ function ReviewScreen({ onNavigate }: { onNavigate: (s: Screen) => void }) {
 
   const handleSend = () => {
     setSending(true);
-    setTimeout(() => { setSending(false); onNavigate("pending"); }, 1800);
+    setTimeout(() => { setSending(false); onNavigate("interview-confirm"); }, 1800);
   };
 
   return (
@@ -1636,7 +1709,7 @@ function ReportScreen({ onNavigate }: { onNavigate: (s: Screen) => void }) {
       onNavigate={onNavigate}
       title="Resultado e Relatório"
       subtitle="Analista de Marketing Digital · Agência Creative XYZ · 18/07/2026"
-      actions={<Btn variant="outline" size="sm"><Upload className="w-3.5 h-3.5" /> Exportar PDF</Btn>}
+      actions={<Btn variant="outline" size="sm" onClick={() => toast.success("PDF gerado! O download iniciará em instantes.")}><Upload className="w-3.5 h-3.5" /> Exportar PDF</Btn>}
     >
       <div className="w-full">
         {/* Score hero — two-panel */}
@@ -1704,6 +1777,7 @@ function ReportScreen({ onNavigate }: { onNavigate: (s: Screen) => void }) {
                     fill="#1D4ED8"
                     fillOpacity={0.12}
                     strokeWidth={2}
+                    isAnimationActive={false}
                     dot={(props: any) => {
                       const { cx, cy, payload } = props;
                       const col = scoreColor(payload.score);
@@ -1917,6 +1991,15 @@ function InterviewHistoryScreen({ onNavigate }: { onNavigate: (s: Screen) => voi
     { id: "E001", vaga: "Estágio em Gestão de Redes",    empresa: "Connect Mkt",          data: "02/07/2026", perguntas: 5, status: "Concluída", nota: "7.2", badge: "default" as const },
   ];
 
+  const [filtro, setFiltro] = useState("Todos");
+  const filtered = HISTORICO.filter(h => {
+    if (filtro === "Todos") return true;
+    if (filtro === "Concluídas") return h.status === "Concluída";
+    if (filtro === "Aguardando") return h.status.includes("Aguardando");
+    if (filtro === "Em andamento") return h.status === "Em andamento";
+    return true;
+  });
+
   return (
     <AuthLayout
       current="interview-history"
@@ -1930,7 +2013,8 @@ function InterviewHistoryScreen({ onNavigate }: { onNavigate: (s: Screen) => voi
           <div className="flex flex-wrap gap-3 items-center">
             <span className="text-sm font-semibold text-foreground shrink-0">Filtrar por:</span>
             {["Todos", "Concluídas", "Aguardando", "Em andamento"].map(f => (
-              <button key={f} className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-colors ${f === "Todos" ? "bg-primary text-white" : "bg-muted text-muted-foreground hover:bg-accent"}`}>
+              <button key={f} onClick={() => setFiltro(f)}
+                className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-colors ${f === filtro ? "bg-primary text-white" : "bg-muted text-muted-foreground hover:bg-accent"}`}>
                 {f}
               </button>
             ))}
@@ -1939,7 +2023,12 @@ function InterviewHistoryScreen({ onNavigate }: { onNavigate: (s: Screen) => voi
 
         {/* Lista */}
         <div className="space-y-3">
-          {HISTORICO.map((h) => (
+          {filtered.length === 0 && (
+            <Card className="p-8 text-center">
+              <p className="text-muted-foreground text-sm">Nenhuma entrevista encontrada para este filtro.</p>
+            </Card>
+          )}
+          {filtered.map((h) => (
             <Card key={h.id} className="p-4 sm:p-5 hover:shadow-md transition-all">
               <div className="flex flex-col sm:flex-row sm:items-center gap-4">
                 <div className="flex-1 min-w-0">
@@ -2328,10 +2417,10 @@ function EmailVerifyScreen({ onNavigate }: { onNavigate: (s: Screen) => void }) 
             </p>
           </div>
           <div className="space-y-3">
-            <Btn variant="primary" className="w-full" onClick={() => onNavigate("dashboard")}>
+            <Btn variant="primary" className="w-full" onClick={() => onNavigate("candidate-onboarding")}>
               Já confirmei meu e-mail
             </Btn>
-            <Btn variant="outline" className="w-full">
+            <Btn variant="outline" className="w-full" onClick={() => toast.info("E-mail reenviado! Verifique sua caixa de entrada.")}>
               <RotateCcw className="w-4 h-4" /> Reenviar e-mail
             </Btn>
           </div>
@@ -3065,7 +3154,7 @@ function MaterialCard({
       </div>
       <div className="flex items-center justify-between gap-3 pt-1 border-t border-border">
         <Badge variant="info">{material.categoria}</Badge>
-        <Btn variant="primary" size="sm">Abrir material</Btn>
+        <Btn variant="primary" size="sm" onClick={() => toast.info("Abrindo material...")}>Abrir material</Btn>
       </div>
     </Card>
   );
@@ -3345,6 +3434,11 @@ export default function App() {
     "email-verify":     <EmailVerifyScreen      onNavigate={navigate} />,
     "forgot-password":  <ForgotPasswordScreen   onNavigate={navigate} />,
     "reset-password":   <ResetPasswordScreen    onNavigate={navigate} />,
+    // Onboarding / Primeiro acesso
+    "candidate-onboarding": <CandidateOnboardingScreen onNavigate={navigate} />,
+    "eval-activate":    <EvalActivateScreen     onNavigate={navigate} />,
+    "eval-onboarding":  <EvalOnboardingScreen   onNavigate={navigate} />,
+    "admin-onboarding": <AdminOnboardingScreen  onNavigate={navigate} />,
     // Candidato
     dashboard:          <DashboardScreen        onNavigate={navigate} />,
     profile:            <ProfileScreen          onNavigate={navigate} />,
@@ -3368,10 +3462,36 @@ export default function App() {
     // Resultado
     pending:            <PendingScreen          onNavigate={navigate} />,
     report:             <ReportScreen           onNavigate={navigate} />,
+    // Avaliador
+    "eval-dashboard":   <EvalDashboardScreen    onNavigate={navigate} />,
+    "eval-queue":       <EvalQueueScreen        onNavigate={navigate} />,
+    "eval-active":      <EvalActiveScreen       onNavigate={navigate} />,
+    "eval-screen":      <EvalScreenView         onNavigate={navigate} />,
+    "eval-review":      <EvalReviewScreen       onNavigate={navigate} />,
+    "eval-done":        <EvalDoneScreen         onNavigate={navigate} />,
+    "eval-history":     <EvalHistoryScreen      onNavigate={navigate} />,
+    "eval-criteria":    <EvalCriteriaScreen     onNavigate={navigate} />,
+    "eval-settings":    <EvalSettingsScreen     onNavigate={navigate} />,
+    // Administrador
+    "admin-dashboard":  <AdminDashboardScreen   onNavigate={navigate} />,
+    "admin-candidates": <AdminCandidatesScreen        onNavigate={navigate} />,
+    "admin-candidate-detail": <AdminCandidateDetailScreen onNavigate={navigate} />,
+    "admin-evaluators": <AdminEvaluatorsScreen        onNavigate={navigate} />,
+    "admin-evaluator-form": <AdminEvaluatorFormScreen   onNavigate={navigate} />,
+    "admin-interviews": <AdminInterviewsScreen  onNavigate={navigate} />,
+    "admin-assign":     <AdminAssignScreen      onNavigate={navigate} />,
+    "admin-questions":  <AdminQuestionsScreen   onNavigate={navigate} />,
+    "admin-question-form": <AdminQuestionFormScreen onNavigate={navigate} />,
+    "admin-roles":      <AdminRolesScreen       onNavigate={navigate} />,
+    "admin-criteria":   <AdminCriteriaScreen    onNavigate={navigate} />,
+    "admin-consent":    <AdminConsentScreen     onNavigate={navigate} />,
+    "admin-audit":      <AdminAuditScreen       onNavigate={navigate} />,
+    "admin-settings":   <AdminSettingsScreen    onNavigate={navigate} />,
   };
 
   return (
     <div className="flex flex-col min-h-screen">
+      <Toaster position="top-center" richColors />
       <FlowNav current={screen} onNavigate={navigate} />
       <div className="flex-1 flex flex-col">
         {screenMap[screen]}
