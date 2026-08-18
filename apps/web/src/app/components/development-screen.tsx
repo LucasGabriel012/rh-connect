@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { toast } from "sonner";
 import {
   TrendingUp, Star, Video, Award, Monitor, BookOpen,
   Clock, GraduationCap, Check, ArrowRight, ChevronRight, MessageSquare,
@@ -475,7 +476,7 @@ export function DevelopmentContent({ onNavigate }: { onNavigate: NavFn }) {
                 </div>
               </div>
               <div className="mt-3 pt-3 border-t border-slate-200">
-                <Btn variant="outline" size="sm" className="w-full">
+                <Btn variant="outline" size="sm" className="w-full" onClick={() => toast.info("Abrindo plataforma de curso...")}>
                   Acessar curso <ArrowRight className="w-3.5 h-3.5" />
                 </Btn>
               </div>

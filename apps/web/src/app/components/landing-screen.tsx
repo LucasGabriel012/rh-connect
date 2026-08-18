@@ -435,7 +435,7 @@ export function LandingScreen({ onNavigate }: { onNavigate: NavFn }) {
       </section>
 
       {/* ── Footer ── */}
-      <footer className="bg-slate-900 px-4 sm:px-8 py-10 sm:py-12">
+      <footer className="px-4 sm:px-8 py-10 sm:py-12 bg-[#021025]">
         <div className="max-w-6xl mx-auto">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-8">
             <div>
