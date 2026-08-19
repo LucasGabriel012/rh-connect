@@ -35,10 +35,36 @@ Portanto, o objetivo agora não é "mexer em tudo", e sim preparar o caminho par
 
 ## 3. Como rodar o projeto localmente
 
-Passo a passo:
+No Windows, a recomendação inicial é usar o **PowerShell** ou o **terminal integrado do VS Code**.
+
+Por enquanto, evite usar o **Git Bash** para rodar o projeto. Em alguns computadores ele pode não reconhecer o `pnpm` mesmo quando o Node/npm estão instalados corretamente. Isso pode gerar o erro:
+
+```text
+pnpm: command not found
+```
+
+Esse erro normalmente significa que o `pnpm` não está instalado ou não foi reconhecido pelo terminal atual.
+
+Antes de rodar o projeto, confira se Node, npm e pnpm estão disponíveis:
+
+```bash
+node -v
+npm -v
+pnpm -v
+```
+
+Se `node -v` e `npm -v` funcionarem, mas `pnpm -v` não funcionar, instale o pnpm com:
+
+```bash
+npm install -g pnpm
+```
+
+Depois de instalar, feche o terminal e abra novamente. Isso ajuda o Windows/VS Code a reconhecer o novo comando.
+
+Passo a passo para rodar pela raiz do projeto:
 
 1. Abra o terminal na raiz do projeto.
-2. Instale as dependências, se necessário:
+2. Instale as dependências com pnpm:
 
 ```bash
 pnpm install
@@ -51,6 +77,14 @@ pnpm run dev:web
 ```
 
 4. Abra no navegador a URL indicada pelo Vite no terminal.
+
+Se você estiver com o terminal aberto diretamente dentro de `apps/web`, também pode rodar:
+
+```bash
+pnpm run dev
+```
+
+Use `pnpm` como gerenciador do projeto. Não rode `npm install`, porque isso pode gerar `package-lock.json` e misturar gerenciadores de pacote.
 
 Arquivos e pastas que não devem ser commitados:
 
@@ -306,22 +340,26 @@ Entrega esperada:
 Fluxo recomendado:
 
 1. Atualizar a `main`.
-2. Criar uma branch nova.
-3. Escolher uma frente/tela.
-4. Localizar o arquivo.
-5. Fazer ajuste pequeno.
-6. Testar localmente.
-7. Rodar `git status`.
-8. Fazer commit.
-9. Abrir Pull Request.
+2. Instalar ou atualizar dependências com `pnpm install`.
+3. Rodar o projeto com `pnpm run dev:web`.
+4. Confirmar que a base abre normalmente no navegador.
+5. Criar uma branch nova.
+6. Escolher uma frente/tela.
+7. Localizar o arquivo.
+8. Fazer ajuste pequeno.
+9. Testar localmente.
+10. Rodar `git status`.
+11. Fazer commit.
+12. Abrir Pull Request.
 
 Comandos úteis:
 
 ```bash
 git checkout main
 git pull origin main
-git checkout -b nome-da-branch
+pnpm install
 pnpm run dev:web
+git checkout -b nome-da-branch
 git status
 git add caminho/do/arquivo
 git commit -m "mensagem do commit"
