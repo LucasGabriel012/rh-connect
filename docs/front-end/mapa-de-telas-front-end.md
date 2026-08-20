@@ -1,94 +1,500 @@
-# Mapa de Telas do Front-end
+# Mapa de Telas do Front-end — RH Connect
+## Versão atualizada para a entrega testável de 10/09/2026
 
-Status utilizados:
+**Projeto:** RH Connect  
+**Versão:** v2.0  
+**Data de atualização:** 20/08/2026  
+**Referência principal:** Escopo da Entrega Testável 10/09 — v1.2  
+
+---
+
+# 1. Objetivo
+
+Este documento organiza as telas atuais do Front-end do RH Connect e indica:
+
+- qual perfil utiliza cada tela;
+- prioridade;
+- se entra ou não na entrega de 10/09;
+- estado atual;
+- dependência com Back-end;
+- rota futura sugerida;
+- prioridade de migração;
+- observações de produto e integração.
+
+O mapa deve ser usado em conjunto com:
+
+- Escopo da Entrega Testável 10/09;
+- Plano Operacional Front-end — Semana 1;
+- Plano de Migração Estrutural do Front-end;
+- Plano Operacional Back-end — Preparação para Integração;
+- Design System.
+
+---
+
+# 2. Status utilizados
 
 - **Visual**: tela representada visualmente, sem comportamento real completo.
-- **Mockado**: usa dados ficticios/hardcoded.
-- **Simulado**: fluxo ou acao representada por estado local, `setTimeout` ou navegacao fake.
-- **Futuro**: nao deve entrar no caminho critico agora ou depende de decisao posterior.
+- **Mockado**: usa dados fictícios/hardcoded.
+- **Simulado**: fluxo ou ação representada por estado local, `setTimeout`, navegação fake ou lógica apenas visual.
+- **Real parcial**: parte do comportamento já pode existir, mas ainda depende de integração ou persistência.
+- **Futuro**: não entra no caminho crítico de 10/09 ou depende de evolução posterior.
+- **Pendente de decisão**: depende de uma decisão de produto ainda não fechada.
 
-## Publicas e autenticacao
+## Prioridade de migração
 
-| Tela | Arquivo/componente provavel | Perfil | Prioridade | 10/09 | Status atual | Dependencia com Back-end | Observacoes |
-|---|---|---|---|---|---|---|---|
-| Landing | `landing-screen.tsx` / `LandingScreen` | Publico | Alta | Sim | Visual | Nao imediata | Principal entrada do produto. |
-| Login/Cadastro | `App.tsx` / `AuthScreen` | Publico | Alta | Sim | Simulado | Sim | Deve virar fluxo real de auth futuramente. |
-| Verificacao de e-mail | `App.tsx` / `EmailVerifyScreen` | Publico | Media | Talvez | Simulado | Sim | Depende de decisao de ativacao e envio de e-mail. |
-| Esqueci senha | `App.tsx` / `ForgotPasswordScreen` | Publico | Media | Talvez | Simulado | Sim | Depende de contrato de recuperacao. |
-| Redefinir senha | `App.tsx` / `ResetPasswordScreen` | Publico | Media | Talvez | Simulado | Sim | Depende de token/fluxo real. |
-| Termos de uso | `App.tsx` / `TermsScreen` | Publico | Media | Sim | Visual | Talvez | Texto deve ser validado pelo time. |
-| Privacidade | `App.tsx` / `PrivacyScreen` | Publico | Media | Sim | Visual | Talvez | Deve alinhar com regras de dados, imagem e voz. |
+- **P0**: caminho crítico da entrega; migrar primeiro.
+- **P1**: necessária para suportar o fluxo principal.
+- **P2**: importante, mas pode ser migrada depois das telas críticas.
+- **P3**: futura ou fora do recorte obrigatório.
+
+---
+
+# 3. Públicas e autenticação
+
+| Tela | Arquivo/componente provável | Perfil | Prioridade | 10/09 | Status atual | Dependência Back | Rota futura sugerida | Migração | Observações |
+|---|---|---|---|---|---|---|---|---|---|
+| Landing | `landing-screen.tsx` / `LandingScreen` | Público | Alta | Sim | Visual | Não imediata | `/` | P1 | Entrada principal do produto. Manter alinhada ao Design System. |
+| Login | `App.tsx` / `AuthScreen` | Público | Alta | Sim | Simulado | Sim | `/login` | P0 | Deve virar login real e redirecionar por perfil. |
+| Cadastro de candidato | `App.tsx` / `AuthScreen` | Público | Alta | Sim | Simulado | Sim | `/register` | P0 | Cadastro público apenas para candidato. |
+| Verificação de e-mail | `App.tsx` / `EmailVerifyScreen` | Público | Média | A validar | Simulado | Sim | `/verify-email` | P2 | Só entra se estiver confirmada como parte do fluxo real de cadastro. Não deve bloquear login/cadastro mínimo. |
+| Esqueci senha | `App.tsx` / `ForgotPasswordScreen` | Público | Baixa | Não | Simulado | Sim | `/forgot-password` | P3 | Fora do foco de 10/09. |
+| Redefinir senha | `App.tsx` / `ResetPasswordScreen` | Público | Baixa | Não | Simulado | Sim | `/reset-password` | P3 | Fora do foco de 10/09. |
+| Termos de uso | `App.tsx` / `TermsScreen` | Público | Média | Sim | Visual | Talvez | `/terms` | P2 | Texto precisa estar coerente com uso de dados, imagem e vídeo. |
+| Privacidade | `App.tsx` / `PrivacyScreen` | Público | Média | Sim | Visual | Talvez | `/privacy` | P2 | Deve alinhar com consentimento, vídeo, acesso e retenção. |
+
+---
+
+# 4. Onboarding
+
+O onboarding entra na entrega e deve acontecer **após autenticação**.
+
+| Tela | Arquivo/componente provável | Perfil | Prioridade | 10/09 | Status atual | Dependência Back | Rota futura sugerida | Migração | Observações |
+|---|---|---|---|---|---|---|---|---|---|
+| Onboarding do candidato | `onboarding-screens.tsx` / `CandidateOnboardingScreen` | Candidato | Alta | Sim | Simulado | Sim | `/candidate/onboarding` | P0 | Curto. Nilo pode aparecer apenas estático. |
+| Onboarding do avaliador | `eval-screens.tsx` / `EvalOnboardingScreen` | Avaliador | Média | Sim | Simulado | Sim | `/evaluator/onboarding` | P1 | Deve ser curto e não representar cadastro público. |
+| Onboarding do admin | `admin-screens.tsx` / `AdminOnboardingScreen` | Admin | Média | Sim | Simulado | Sim | `/admin/onboarding` | P2 | Pode ser introdução rápida e simplificada. |
+
+---
+
+# 5. Candidato — núcleo do fluxo
+
+| Tela | Arquivo/componente provável | Prioridade | 10/09 | Status atual | Dependência Back | Rota futura sugerida | Migração | Observações |
+|---|---|---|---|---|---|---|---|---|
+| Dashboard | `App.tsx` / `DashboardScreen` | Alta | Sim | Mockado | Sim | `/candidate/dashboard` | P0 | Deve refletir estado real do candidato e próxima ação. |
+| Perfil | `App.tsx` / `ProfileScreen` | Alta | Sim | Mockado | Sim | `/candidate/profile` | P0 | Dados mínimos necessários para sustentar a jornada. |
+| Configurações | `App.tsx` / `SettingsScreen` | Baixa | Não obrigatório | Simulado | Sim | `/candidate/settings` | P3 | Fora do caminho crítico; manter apenas se simples. |
+| Notificações | `App.tsx` / `NotificationsScreen` | Baixa | Não obrigatório | Mockado | Sim | `/candidate/notifications` | P3 | Notificações reais não fazem parte do recorte principal. |
+| Histórico de entrevistas | `App.tsx` / `InterviewHistoryScreen` | Média | Pode entrar | Mockado | Sim | `/candidate/interviews` | P2 | Útil, mas não deve bloquear o fluxo principal. |
+| Relatório | `App.tsx` / `ReportScreen` | Alta | Sim | Mockado | Sim | `/candidate/reports/:id` | P0 | Só deve liberar resultado após avaliação concluída. |
+
+---
+
+# 6. Candidato — contexto de treinamento
+
+Esta área permanece **pendente de decisão de produto**.
+
+A equipe ainda precisa validar se o contexto da entrevista será baseado em:
+
+```text
+Vaga
+OU
+Área/Subárea relacionada ao perfil
+```
+
+Enquanto a decisão não for fechada, o Front não deve eliminar definitivamente as telas atuais de vaga nem consolidar toda a navegação em torno delas.
+
+| Tela/Área | Arquivo/componente provável | Prioridade | 10/09 | Status atual | Dependência Back | Rota futura sugerida | Migração | Observações |
+|---|---|---|---|---|---|---|---|---|
+| Minhas vagas | `App.tsx` / `JobListScreen` | Pendente | Pendente | Mockado | Sim | `/candidate/context` ou `/candidate/jobs` | P2 | Manter até decisão vaga x área/subárea. |
+| Nova vaga | `App.tsx` / `JobScreen` | Pendente | Pendente | Simulado | Sim | `/candidate/context/new` ou `/candidate/jobs/new` | P2 | Não consolidar como fluxo definitivo antes da decisão. |
+| Detalhe de vaga | `App.tsx` / `JobListScreen` reaproveitado | Pendente | Pendente | Mockado | Sim | `/candidate/jobs/:id` | P2 | Pode deixar de existir se o produto migrar para áreas/subáreas. |
+| Selecionar contexto | `App.tsx` / `InterviewSetupScreen` | Alta | Sim | Simulado | Sim | `/candidate/interviews/new` | P0 | Deve existir como etapa funcional, independentemente do modelo final. |
+| Explorar áreas/subáreas | Ainda não consolidado | Pendente | Pendente | Futuro / decisão | Sim | `/candidate/explore` | P2 | Só implementar após validação de produto. |
+
+---
+
+# 7. Candidato — fluxo de entrevista com vídeo
+
+A entrevista com vídeo é obrigatória para 10/09.
+
+| Tela | Arquivo/componente provável | Prioridade | 10/09 | Status atual | Dependência Back | Rota futura sugerida | Migração | Observações |
+|---|---|---|---|---|---|---|---|---|
+| Consentimento | `App.tsx` / `ConsentScreen` | Alta | Sim | Simulado | Sim | `/candidate/interviews/new/consent` | P0 | Consentimento precisa ser registrado. |
+| Orientações | `App.tsx` / `PrepScreen` | Alta | Sim | Visual | Não imediata | `/candidate/interviews/new/preparation` | P0 | Orientação curta antes da gravação. |
+| Teste técnico | `App.tsx` / `DeviceScreen` | Alta | Sim | Simulado | Talvez | `/candidate/interviews/new/device-check` | P0 | Teste real de câmera/microfone no mínimo necessário. |
+| Entrevista | `App.tsx` / `InterviewScreen` | Alta | Sim | Simulado | Sim | `/candidate/interviews/new/record` | P0 | Precisa gravar vídeo real. |
+| Revisão | `App.tsx` / `ReviewScreen` | Alta | Sim | Simulado | Sim | `/candidate/interviews/new/review` | P0 | Revisão da gravação antes do envio. |
+| Confirmar envio | `App.tsx` / `InterviewConfirmScreen` | Alta | Sim | Simulado | Sim | `/candidate/interviews/new/submit` | P0 | Deve realizar envio/registro real. |
+| Entrevista concluída | `App.tsx` / `InterviewDoneScreen` | Alta | Sim | Simulado | Sim | `/candidate/interviews/:id/success` | P0 | Estado final após envio confirmado. |
+| Aguardando avaliação | `App.tsx` / `PendingScreen` | Alta | Sim | Mockado | Sim | `/candidate/interviews/:id/status` | P0 | Deve usar status real da entrevista/avaliação. |
+
+---
+
+# 8. Candidato — Desenvolvimento, Gamificação, Nilo e Árvore
+
+A área de Desenvolvimento muda de classificação em relação ao mapa anterior.
+
+Gamificação base, Nilo estático e Árvore de Talentos reformulada **entram em 10/09**.
+
+| Tela/Área | Arquivo/componente provável | Prioridade | 10/09 | Status atual | Dependência Back | Rota futura sugerida | Migração | Observações |
+|---|---|---|---|---|---|---|---|---|
+| Meu Desenvolvimento / Gamificação base | `development-screen.tsx` / `DevelopmentContent` | Alta | Sim | Mockado | Sim/Parcial | `/candidate/development` | P1 | Deve ser reformulado conforme escopo atual. |
+| Árvore de Talentos | `development-screen.tsx` / componente a consolidar | Alta | Sim | Visual / a reformular | Parcial | `/candidate/development` | P1 | Representa progresso dentro da jornada, não senioridade profissional. |
+| Nilo estático | componentes/telas aprovadas | Média | Sim | Visual | Não imediata | Integrado às telas | P1 | Guia visual. Sem voz, lip-sync ou avaliação. |
+| Missão / próxima ação | `development-screen.tsx` | Média | Sim, base | Mockado | Sim/Parcial | `/candidate/development` | P1 | Pode refletir etapa real da jornada. |
+| Centro de Desenvolvimento | `development-screen.tsx` | Baixa | Não | Mockado/Futuro | Talvez | `/candidate/development-center` | P3 | Fora do escopo obrigatório. |
+| Materiais | `App.tsx` / `MaterialsScreen` | Baixa | Não | Mockado | Talvez | `/candidate/materials` | P3 | Evolução futura. |
+
+---
+
+# 9. Avaliador
+
+| Tela | Arquivo/componente provável | Prioridade | 10/09 | Status atual | Dependência Back | Rota futura sugerida | Migração | Observações |
+|---|---|---|---|---|---|---|---|---|
+| Ativação de conta | `eval-screens.tsx` / `EvalActivateScreen` | Média | Sim, se convite for usado | Simulado | Sim | `/evaluator/activate` | P1 | Avaliador não possui cadastro público. |
+| Dashboard | `eval-screens.tsx` / `EvalDashboardScreen` | Alta | Sim | Mockado | Sim | `/evaluator/dashboard` | P0 | Deve refletir avaliações atribuídas. |
+| Fila de avaliações | `eval-screens.tsx` / `EvalQueueScreen` | Alta | Sim | Mockado | Sim | `/evaluator/evaluations` | P0 | Precisa usar atribuições reais. |
+| Em andamento | `eval-screens.tsx` / `EvalActiveScreen` | Média | Pode entrar | Mockado | Sim | `/evaluator/evaluations/active` | P2 | Pode ser simplificada. |
+| Tela de avaliação | `eval-screens.tsx` / `EvalScreenView` | Alta | Sim | Simulado | Sim | `/evaluator/evaluations/:id` | P0 | Deve reproduzir vídeo autorizado e apresentar critérios. |
+| Revisão de avaliação | `eval-screens.tsx` / `EvalReviewScreen` | Alta | Sim | Simulado | Sim | `/evaluator/evaluations/:id/review` | P0 | Revisão antes da conclusão. |
+| Avaliação enviada | `eval-screens.tsx` / `EvalDoneScreen` | Alta | Sim | Simulado | Sim | `/evaluator/evaluations/:id/success` | P0 | Estado real de avaliação concluída. |
+| Histórico | `eval-screens.tsx` / `EvalHistoryScreen` | Baixa | Não obrigatório | Mockado | Sim | `/evaluator/history` | P3 | Não deve bloquear entrega. |
+| Critérios | `eval-screens.tsx` / `EvalCriteriaScreen` | Média | Pode entrar | Mockado | Sim | `/evaluator/criteria` | P2 | Pode ser apenas leitura dos critérios atuais. |
+| Configurações | `eval-screens.tsx` / `EvalSettingsScreen` | Baixa | Não | Simulado | Sim | `/evaluator/settings` | P3 | Fora do caminho crítico. |
+
+---
+
+# 10. Administrador
+
+O Admin entra em recorte mínimo para sustentar a operação do fluxo.
+
+| Tela | Arquivo/componente provável | Prioridade | 10/09 | Status atual | Dependência Back | Rota futura sugerida | Migração | Observações |
+|---|---|---|---|---|---|---|---|---|
+| Dashboard | `admin-screens.tsx` / `AdminDashboardScreen` | Alta | Sim | Mockado | Sim | `/admin/dashboard` | P0 | Operação e acompanhamento mínimo. |
+| Candidatos | `admin-screens.tsx` / `AdminCandidatesScreen` | Média | Pode entrar | Mockado | Sim | `/admin/candidates` | P2 | Não deve bloquear fluxo principal. |
+| Detalhe do candidato | `admin-screens.tsx` / `AdminCandidateDetailScreen` | Média | Pode entrar | Mockado | Sim | `/admin/candidates/:id` | P2 | Depende de autorização e dados reais. |
+| Avaliadores | `admin-screens.tsx` / `AdminEvaluatorsScreen` | Alta | Sim | Mockado | Sim | `/admin/evaluators` | P0 | Necessário para operação mínima. |
+| Formulário de avaliador | `admin-screens.tsx` / `AdminEvaluatorFormScreen` | Média | Pode entrar | Simulado | Sim | `/admin/evaluators/new` | P1 | Pode apoiar convite/provisionamento controlado. |
+| Entrevistas | `admin-screens.tsx` / `AdminInterviewsScreen` | Alta | Sim | Mockado | Sim | `/admin/interviews` | P0 | Acompanhamento mínimo do fluxo. |
+| Atribuições | `admin-screens.tsx` / `AdminAssignScreen` | Alta | Sim | Simulado | Sim | `/admin/assignments` | P0 | Necessária para sustentar avaliação humana. |
+| Perguntas | `admin-screens.tsx` / `AdminQuestionsScreen` | Média | Pode entrar | Mockado | Sim | `/admin/questions` | P1 | Gestão básica se necessária ao fluxo. |
+| Formulário de pergunta | `admin-screens.tsx` / `AdminQuestionFormScreen` | Baixa | Não obrigatório | Simulado | Sim | `/admin/questions/new` | P3 | Pode ser substituído por dados pré-cadastrados. |
+| Cargos/perfis | `admin-screens.tsx` / `AdminRolesScreen` | Baixa | Não | Mockado | Sim | `/admin/roles` | P3 | Fora do fluxo mínimo. |
+| Critérios | `admin-screens.tsx` / `AdminCriteriaScreen` | Média | Sim ou pré-cadastrado | Mockado | Sim | `/admin/criteria` | P1 | Critérios precisam existir; UI completa pode ser simplificada. |
+| Consentimentos | `admin-screens.tsx` / `AdminConsentScreen` | Baixa | Não obrigatório | Mockado | Sim | `/admin/consents` | P3 | Registro real deve existir no Back; tela administrativa pode esperar. |
+| Auditoria | `admin-screens.tsx` / `AdminAuditScreen` | Baixa | Não | Mockado | Sim | `/admin/audit` | P3 | Evolução futura. |
+| Configurações | `admin-screens.tsx` / `AdminSettingsScreen` | Baixa | Não | Simulado | Sim | `/admin/settings` | P3 | Fora do caminho crítico. |
+
+---
+
+# 11. Recursos futuros / “Em breve”
+
+| Tela/Área | Perfil | 10/09 | Status | Observações |
+|---|---|---|---|---|
+| Centro de Desenvolvimento completo | Candidato | Não | Futuro | Fora do recorte obrigatório. |
+| Materiais ricos | Candidato | Não | Futuro | Pode aparecer apenas como “Em breve” se aprovado. |
+| Gamificação avançada | Candidato | Não | Futuro | Base entra; sistema completo fica para depois. |
+| Nilo com voz/lip-sync | Candidato | Não | Futuro | Para 10/09, somente representação estática. |
+| Árvore dinâmica avançada | Candidato | Não | Futuro | Para 10/09, versão visual reformulada. |
+| IA supervisionada | Todos | Não | Futuro | Fora da entrega. |
+| Recuperação de senha | Público | Não | Futuro | Fora do foco principal. |
+| Auditoria operacional completa | Admin | Não | Futuro | Exige logs e Back-end mais avançado. |
+| Analytics avançados | Todos/Adm | Não | Futuro | Não bloquear dashboards mínimos. |
+| Notificações avançadas | Todos | Não | Futuro | Não bloquear fluxo principal. |
+
+---
+
+# 12. Telas que mudaram de classificação em relação ao mapa anterior
+
+## Agora entram em 10/09
+
+- Meu Desenvolvimento / Gamificação base;
+- Nilo estático;
+- Árvore de Talentos reformulada;
+- onboarding curto dos três perfis;
+- entrevista com vídeo real;
+- teste técnico mínimo de câmera/microfone;
+- envio/registro real do vídeo.
+
+## Agora ficam fora do foco
+
+- recuperação de senha;
+- Centro de Desenvolvimento completo;
+- Nilo com voz;
+- lip-sync;
+- gamificação avançada;
+- Árvore dinâmica avançada.
+
+## Permanecem pendentes
+
+- `Minhas Vagas`;
+- `Nova vaga`;
+- `Detalhe de vaga`;
+- eventual tela de Áreas/Subáreas.
+
+Essas telas dependem da decisão de produto sobre o contexto de treinamento.
+
+---
+
+# 13. Rotas prioritárias para a migração
+
+A proposta de rotas deve ser validada contra este mapa antes da implementação final.
+
+## Públicas
+
+```text
+/
+/login
+/register
+/terms
+/privacy
+```
 
 ## Candidato
 
-| Tela | Arquivo/componente provavel | Perfil | Prioridade | 10/09 | Status atual | Dependencia com Back-end | Observacoes |
-|---|---|---|---|---|---|---|---|
-| Onboarding do candidato | `onboarding-screens.tsx` / `CandidateOnboardingScreen` | Candidato | Alta | Sim | Simulado | Sim | Entra no fluxo principal. |
-| Dashboard | `App.tsx` / `DashboardScreen` | Candidato | Alta | Sim | Mockado | Sim | Deve refletir estado real do usuario futuramente. |
-| Perfil | `App.tsx` / `ProfileScreen` | Candidato | Alta | Sim | Mockado | Sim | Dados pessoais e profissionais hardcoded. |
-| Configuracoes | `App.tsx` / `SettingsScreen` | Candidato | Media | Talvez | Simulado | Sim | Contem preferencias e acoes sensiveis simuladas. |
-| Materiais | `App.tsx` / `MaterialsScreen` | Candidato | Baixa | Nao | Mockado | Talvez | Pode ficar como evolucao futura. |
-| Notificacoes | `App.tsx` / `NotificationsScreen` | Candidato | Media | Talvez | Mockado | Sim | Sem backend de notificacoes. |
-| Minhas vagas | `App.tsx` / `JobListScreen` | Candidato | Alta | Sim | Mockado | Sim | Necessaria para selecionar vaga. |
-| Nova vaga | `App.tsx` / `JobScreen` | Candidato | Alta | Sim | Simulado | Sim | Cadastro real depende de API. |
-| Detalhe de vaga | `App.tsx` / `JobListScreen` reaproveitado | Candidato | Media | Talvez | Mockado | Sim | Mapeamento atual ainda nao e tela dedicada. |
-| Historico de entrevistas | `App.tsx` / `InterviewHistoryScreen` | Candidato | Media | Talvez | Mockado | Sim | Pode apoiar demonstracao. |
-| Desenvolvimento | `development-screen.tsx` / `DevelopmentContent` | Candidato | Baixa | Nao | Mockado | Talvez | Relacionado a recursos futuros/gamificacao. |
-| Selecionar vaga | `App.tsx` / `InterviewSetupScreen` | Candidato | Alta | Sim | Simulado | Sim | Inicio do fluxo de entrevista. |
-| Consentimento | `App.tsx` / `ConsentScreen` | Candidato | Alta | Sim | Simulado | Sim | Consentimento real deve ser registrado no Back-end. |
-| Orientacoes | `App.tsx` / `PrepScreen` | Candidato | Alta | Sim | Visual | Nao imediata | Tela educacional do fluxo. |
-| Teste tecnico | `App.tsx` / `DeviceScreen` | Candidato | Alta | Sim | Simulado | Talvez | Camera/microfone ainda nao reais. |
-| Entrevista | `App.tsx` / `InterviewScreen` | Candidato | Alta | Sim | Simulado | Sim | Gravacao e perguntas mockadas. |
-| Revisao | `App.tsx` / `ReviewScreen` | Candidato | Alta | Sim | Simulado | Sim | Envio usa temporizador local. |
-| Confirmar envio | `App.tsx` / `InterviewConfirmScreen` | Candidato | Alta | Sim | Simulado | Sim | Upload real nao existe. |
-| Entrevista concluida | `App.tsx` / `InterviewDoneScreen` | Candidato | Alta | Sim | Simulado | Sim | Estado final visual. |
-| Aguardando avaliacao | `App.tsx` / `PendingScreen` | Candidato | Alta | Sim | Mockado | Sim | Depende do status real da avaliacao. |
-| Relatorio | `App.tsx` / `ReportScreen` | Candidato | Alta | Sim | Mockado | Sim | Depende de avaliacao concluida/liberada. |
+```text
+/candidate/onboarding
+/candidate/dashboard
+/candidate/profile
+/candidate/interviews/new
+/candidate/interviews/new/consent
+/candidate/interviews/new/preparation
+/candidate/interviews/new/device-check
+/candidate/interviews/new/record
+/candidate/interviews/new/review
+/candidate/interviews/:id/status
+/candidate/reports/:id
+/candidate/development
+```
 
 ## Avaliador
 
-| Tela | Arquivo/componente provavel | Perfil | Prioridade | 10/09 | Status atual | Dependencia com Back-end | Observacoes |
-|---|---|---|---|---|---|---|---|
-| Ativacao de conta | `eval-screens.tsx` / `EvalActivateScreen` | Avaliador | Media | Talvez | Simulado | Sim | Depende do fluxo oficial de convite/ativacao. |
-| Onboarding avaliador | `eval-screens.tsx` / `EvalOnboardingScreen` | Avaliador | Media | Talvez | Simulado | Sim | Pode apoiar demo, mas nao deve virar cadastro publico. |
-| Dashboard | `eval-screens.tsx` / `EvalDashboardScreen` | Avaliador | Alta | Sim | Mockado | Sim | Necessario para suporte minimo da entrega. |
-| Fila de avaliacoes | `eval-screens.tsx` / `EvalQueueScreen` | Avaliador | Alta | Sim | Mockado | Sim | Depende de atribuicoes reais. |
-| Em andamento | `eval-screens.tsx` / `EvalActiveScreen` | Avaliador | Media | Talvez | Mockado | Sim | Pode ficar simplificado. |
-| Tela de avaliacao | `eval-screens.tsx` / `EvalScreenView` | Avaliador | Alta | Sim | Simulado | Sim | Video e criterios ainda mockados. |
-| Revisao de avaliacao | `eval-screens.tsx` / `EvalReviewScreen` | Avaliador | Alta | Sim | Simulado | Sim | Deve virar salvamento/conclusao real futuramente. |
-| Avaliacao enviada | `eval-screens.tsx` / `EvalDoneScreen` | Avaliador | Alta | Sim | Simulado | Sim | Estado visual de conclusao. |
-| Historico | `eval-screens.tsx` / `EvalHistoryScreen` | Avaliador | Media | Talvez | Mockado | Sim | Pode ser posterior ao fluxo minimo. |
-| Criterios | `eval-screens.tsx` / `EvalCriteriaScreen` | Avaliador | Media | Talvez | Mockado | Sim | Leitura de criterios definidos pelo admin. |
-| Configuracoes | `eval-screens.tsx` / `EvalSettingsScreen` | Avaliador | Baixa | Nao | Simulado | Sim | Fora do caminho critico. |
+```text
+/evaluator/onboarding
+/evaluator/dashboard
+/evaluator/evaluations
+/evaluator/evaluations/:id
+/evaluator/evaluations/:id/review
+```
 
 ## Administrador
 
-| Tela | Arquivo/componente provavel | Perfil | Prioridade | 10/09 | Status atual | Dependencia com Back-end | Observacoes |
-|---|---|---|---|---|---|---|---|
-| Onboarding admin | `admin-screens.tsx` / `AdminOnboardingScreen` | Admin | Baixa | Nao | Simulado | Sim | Pode ficar fora da entrega testavel. |
-| Dashboard | `admin-screens.tsx` / `AdminDashboardScreen` | Admin | Alta | Sim | Mockado | Sim | Suporte operacional minimo. |
-| Candidatos | `admin-screens.tsx` / `AdminCandidatesScreen` | Admin | Media | Talvez | Mockado | Sim | Util para demonstracao. |
-| Detalhe do candidato | `admin-screens.tsx` / `AdminCandidateDetailScreen` | Admin | Media | Talvez | Mockado | Sim | Depende de dados reais e autorizacao. |
-| Avaliadores | `admin-screens.tsx` / `AdminEvaluatorsScreen` | Admin | Alta | Sim | Mockado | Sim | Necessario para operacao de atribuicao. |
-| Formulario de avaliador | `admin-screens.tsx` / `AdminEvaluatorFormScreen` | Admin | Media | Talvez | Simulado | Sim | Convite/ativacao dependem de decisao. |
-| Entrevistas | `admin-screens.tsx` / `AdminInterviewsScreen` | Admin | Alta | Sim | Mockado | Sim | Necessario para acompanhar fluxo. |
-| Atribuicoes | `admin-screens.tsx` / `AdminAssignScreen` | Admin | Alta | Sim | Simulado | Sim | Suporte minimo para avaliacao humana. |
-| Perguntas | `admin-screens.tsx` / `AdminQuestionsScreen` | Admin | Media | Talvez | Mockado | Sim | Pode entrar como gestao basica se houver tempo. |
-| Formulario de pergunta | `admin-screens.tsx` / `AdminQuestionFormScreen` | Admin | Baixa | Nao | Simulado | Sim | Pode ficar futuro. |
-| Cargos/perfis | `admin-screens.tsx` / `AdminRolesScreen` | Admin | Baixa | Nao | Mockado | Sim | Fora do fluxo minimo. |
-| Criterios | `admin-screens.tsx` / `AdminCriteriaScreen` | Admin | Media | Talvez | Mockado | Sim | Importante para avaliacao, mas pode iniciar estatico. |
-| Consentimentos | `admin-screens.tsx` / `AdminConsentScreen` | Admin | Media | Talvez | Mockado | Sim | Relevante para seguranca e privacidade. |
-| Auditoria | `admin-screens.tsx` / `AdminAuditScreen` | Admin | Baixa | Nao | Mockado | Sim | Deve ser preservada como futura. |
-| Configuracoes | `admin-screens.tsx` / `AdminSettingsScreen` | Admin | Baixa | Nao | Simulado | Sim | Fora do caminho critico. |
+```text
+/admin/onboarding
+/admin/dashboard
+/admin/evaluators
+/admin/interviews
+/admin/assignments
+/admin/questions
+/admin/criteria
+```
 
-## Futuras ou "em breve"
+## Pendentes da decisão vaga x área/subárea
 
-| Tela/area | Arquivo/componente provavel | Perfil | Prioridade | 10/09 | Status atual | Dependencia com Back-end | Observacoes |
-|---|---|---|---|---|---|---|---|
-| Centro de Desenvolvimento completo | `development-screen.tsx` | Candidato | Baixa | Nao | Mockado | Talvez | Relacionado a evolucao posterior. |
-| Materiais ricos | `App.tsx` / `MaterialsScreen` | Candidato | Baixa | Nao | Mockado | Talvez | Pode ser exibido como em breve. |
-| Gamificacao avancada | `development-screen.tsx` | Candidato | Baixa | Nao | Futuro | Talvez | Depende de decisao de escopo. |
-| Nilo | Documentacao/prototipo | Candidato | Baixa | Nao | Futuro | Talvez | Nao deve ser implementado automaticamente. |
-| IA supervisionada | Nao aplicavel | Todos | Baixa | Nao | Futuro | Sim | Fora do MVP sem decisao posterior. |
-| Upload real de video | Fluxo de entrevista | Candidato | Alta tecnica | Nao agora | Futuro | Sim | Depende de armazenamento, API e politica de retencao. |
-| Auditoria operacional completa | `AdminAuditScreen` | Admin | Media futura | Nao | Mockado | Sim | Exige Back-end e logs reais. |
+```text
+/candidate/jobs
+/candidate/jobs/new
+/candidate/jobs/:id
+```
+
+ou
+
+```text
+/candidate/explore
+/candidate/areas
+```
+
+Não consolidar essas rotas antes da validação.
+
+---
+
+# 14. Ordem de prioridade para a migração estrutural
+
+## P0 — caminho crítico
+
+1. Login/cadastro;
+2. onboarding;
+3. dashboard do candidato;
+4. perfil;
+5. início da entrevista;
+6. consentimento;
+7. preparação;
+8. teste técnico;
+9. gravação;
+10. revisão/envio;
+11. status;
+12. dashboard/fila do avaliador;
+13. tela de avaliação;
+14. revisão/conclusão;
+15. relatório;
+16. dashboard/admin mínimo;
+17. avaliadores;
+18. entrevistas;
+19. atribuições.
+
+## P1 — suporte essencial
+
+- Desenvolvimento/Gamificação base;
+- Árvore de Talentos;
+- Nilo estático;
+- critérios;
+- perguntas;
+- ativação do avaliador quando aplicável.
+
+## P2 — importantes, mas não bloqueantes
+
+- histórico;
+- detalhes administrativos;
+- telas completas do contexto vaga x área/subárea;
+- páginas auxiliares.
+
+## P3 — futuras
+
+- Centro de Desenvolvimento;
+- materiais;
+- configurações completas;
+- recuperação de senha;
+- auditoria avançada;
+- gamificação avançada;
+- Nilo animado/voz;
+- IA.
+
+---
+
+# 15. Dependências principais com o Back-end
+
+| Área Front | Dependência principal |
+|---|---|
+| Login/cadastro | Auth, User, Role |
+| Onboarding | estado do usuário/onboarding |
+| Perfil | CandidateProfile |
+| Contexto | Job ou Area/Subarea, após decisão |
+| Consentimento | Consent |
+| Entrevista | Interview, Question, Response |
+| Vídeo | MediaMetadata + armazenamento de mídia |
+| Status | Interview/Evaluation status |
+| Avaliador | Assignment |
+| Avaliação | Evaluation, EvaluationCriteria |
+| Relatório | Report |
+| Gamificação base | progresso real da jornada / eventos definidos |
+| Admin | usuários, avaliadores, entrevistas, atribuições, critérios |
+
+---
+
+# 16. Critério para considerar uma tela pronta para integração
+
+Uma tela entra em integração quando houver:
+
+```text
+Page
++
+Route
++
+Contrato
++
+Endpoint
+```
+
+Além disso:
+
+- estado visual coerente;
+- loading;
+- erro;
+- estado vazio quando aplicável;
+- regra de acesso por perfil;
+- comportamento real mínimo definido.
+
+---
+
+# 17. Critério para considerar uma tela pronta para 10/09
+
+Uma tela do caminho crítico não deve ser considerada pronta apenas porque “abre”.
+
+Ela deve:
+
+- estar acessível pela navegação real;
+- respeitar o perfil correto;
+- exibir dados reais quando necessário;
+- executar sua ação principal;
+- apresentar erro/estado vazio quando aplicável;
+- não depender de navegação fake;
+- não apresentar mocks como se fossem dados reais;
+- funcionar com responsividade mínima aceitável.
+
+---
+
+# 18. Observação sobre o estado atual dos arquivos
+
+Os caminhos e componentes listados neste documento são baseados no mapeamento atual do protótipo.
+
+Durante a migração estrutural, eles podem mudar para uma organização como:
+
+```text
+pages/
+├── public/
+├── candidate/
+├── evaluator/
+└── admin/
+
+layouts/
+├── CandidateLayout.tsx
+├── EvaluatorLayout.tsx
+└── AdminLayout.tsx
+```
+
+O objetivo não é preservar o arquivo atual.
+
+O objetivo é preservar:
+
+- tela;
+- comportamento aprovado;
+- identidade visual;
+- regras de negócio;
+- posição no fluxo.
+
+---
+
+# 19. Resumo final
+
+O mapa atualizado passa a refletir o escopo atual da entrega:
+
+```text
+AUTENTICAÇÃO
+↓
+ONBOARDING
+↓
+PERFIL
+↓
+CONTEXTO DE TREINAMENTO
+↓
+ENTREVISTA COM VÍDEO
+↓
+AVALIAÇÃO HUMANA
+↓
+RELATÓRIO
+↓
+GAMIFICAÇÃO BASE
+```
+
+Com suporte de:
+
+```text
+ADMIN
++
+NILO ESTÁTICO
++
+ÁRVORE DE TALENTOS REFORMULADA
+```
+
+E mantendo fora do caminho crítico:
+
+```text
+RECUPERAÇÃO DE SENHA
+CENTRO DE DESENVOLVIMENTO
+NILO COM VOZ
+GAMIFICAÇÃO AVANÇADA
+ÁRVORE DINÂMICA AVANÇADA
+IA
+```
+
+A decisão **vaga x área/subárea** permanece registrada como pendência e não deve bloquear as demais frentes.
