@@ -1,20 +1,50 @@
 # Front-end
 
-Esta pasta concentra a documentacao tecnica do Front-end do RH Connect apos a atualizacao do prototipo exportado do Figma Make.
+Esta pasta concentra a documentação técnica do Front-end do RH Connect após a atualização do protótipo exportado do Figma Make.
 
-Os documentos aqui registrados servem como referencia para migrar o prototipo visual para uma arquitetura de produto, preservando identidade visual e reduzindo risco.
+Os documentos aqui registrados servem como referência para preparar, validar e conduzir a evolução do protótipo visual para uma arquitetura de produto, preservando a identidade visual, reduzindo riscos e organizando a migração estrutural de forma gradual.
 
 ## Documentos
 
-- [Auditoria do prototipo atualizado](./auditoria-prototipo-atualizado.md): estado tecnico e funcional atual do `apps/web`, stack encontrada, navegacao, riscos e recomendacoes.
-- [Mapa de telas do Front-end](./mapa-de-telas-front-end.md): telas por perfil, prioridade, status, dependencia com Back-end e relacao com a entrega testavel de 10/09.
-- [Plano de migracao do App.tsx](./plano-de-migracao-app-tsx.md): plano incremental para reduzir o arquivo principal sem quebrar o prototipo.
-- [Mocks e dados temporarios](./mocks-e-dados-temporarios.md): inventario inicial de hardcodes, mocks e simulacoes presentes no prototipo atualizado.
-- [Escopo da entrega de 10/09](./escopo-entrega-10-09.md): recorte funcional recomendado para a entrega testavel.
+- [Auditoria do protótipo atualizado](./auditoria-prototipo-atualizado.md): estado técnico e funcional atual do `apps/web`, stack encontrada, navegação, riscos e recomendações.
 
-## Regras de uso
+- [Mapa de telas do Front-end](./mapa-de-telas-front-end.md): telas por perfil, prioridade, status, dependência com Back-end, rotas futuras sugeridas e relação com a entrega testável de 10/09.
 
-- Estes documentos nao autorizam refatoracao automatica.
-- O prototipo atualizado continua sendo referencia visual e funcional, nao arquitetura final.
-- Mudancas no Front-end devem ser pequenas, revisaveis e validadas por build.
-- Autenticacao, autorizacao, persistencia e midia real dependem de contratos e implementacao posterior do Back-end.
+- [Plano Operacional Front-end — Pré-Migração Estrutural](./plano-operacional-front-end-pre-migracao.md): organiza as frentes de preparação do Front-end antes da migração estrutural, incluindo Design System, dependências, rotas, responsividade, testes e mapeamento da base atual.
+
+- [Guia Operacional — Validação Visual do Design System](./guia-operacional-validacao-visual-design-system.md): orienta a equipe responsável por comparar o produto atual com a referência visual aprovada, registrar padrões, inconsistências, evidências e recomendações antes da consolidação do Design System v0.1.
+
+- [Guia Operacional — Limpeza de Dependências do Front-end](./guia-operacional-limpeza-dependencias-front-end.md): orienta a análise do uso real das dependências e a remoção apenas das bibliotecas comprovadamente seguras.
+
+- [Guia Operacional — Validação do Mapa de Rotas](./guia-operacional-validacao-mapa-rotas.md): orienta a equipe responsável por validar as rotas propostas, perfis, regras de acesso, parâmetros, prioridades e sequência de navegação antes da implementação estrutural com React Router.
+
+- [Plano de migração do App.tsx](./plano-de-migracao-app-tsx.md): plano incremental para reduzir o arquivo principal e reorganizar a base sem reconstruir o protótipo do zero.
+
+- [Mocks e dados temporários](./mocks-e-dados-temporarios.md): inventário inicial de hardcodes, mocks e simulações presentes no protótipo atualizado.
+
+- [Escopo da entrega de 10/09](./escopo-entrega-10-09.md): recorte funcional atual da entrega testável de 10/09.
+
+## Fases do Front-end
+
+A evolução atual do Front-end está organizada em duas fases principais:
+
+```text
+PRÉ-MIGRAÇÃO ESTRUTURAL
+↓
+Auditorias
+Validações
+Limpezas seguras
+Responsividade crítica
+Testes
+Mapeamentos
+↓
+CHECKPOINT
+↓
+MIGRAÇÃO ESTRUTURAL
+↓
+Mocks
+Pages
+Layouts
+Rotas reais
+Navegação
+Integração
